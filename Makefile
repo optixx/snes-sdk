@@ -18,7 +18,7 @@ tcc-65816/config.h:
 	cd tcc-65816 && ./configure --prefix=$(PREFIX) --build-cross
 snes9x: snes9x/config.info
 snes9x/config.info:
-	cd snes9x --prefix=$(PREFIX) && ./configure --with-extra-opt="-Wno-parentheses -Wno-missing-braces"
+	cd snes9x --prefix=$(PREFIX) && ./configure --with-extra-opt="-Wno-parentheses -Wno-missing-braces" --with-debugger
 
 libs: wla_dx
 

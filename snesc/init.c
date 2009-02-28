@@ -76,9 +76,13 @@ void snesc_vblank(void)
     }
   }
 
-  /* workaround: deref constant ptr unimplemented */
+#if 0
+  /* does not work for unknown reasons; asm code looks OK; could be a timing issue */
+  while(*((unsigned char*)0x4212) & 1) {}
+#else
   unsigned char* autojoy = (unsigned char*)0x4212;
   while(*autojoy & 1) {}
+#endif
   
   /* update input buffers */
   unsigned int pad;
@@ -111,8 +115,4 @@ void snesc_init(void)
   for(i = 0; i < 32; i+=2) {
     snesc_oam_table2[i] = 0;
   }
-  
-  /* vblank handler seems to need a dry run; asm code used to do cli, wai here,
-     but simply calling the handler manually once works just as well */
-  snesc_vblank();
 }
