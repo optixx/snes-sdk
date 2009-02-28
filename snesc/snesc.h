@@ -36,7 +36,7 @@ void writebcd(long long bcd, unsigned int *map, unsigned int p, unsigned int off
 void writestring(unsigned char *st, unsigned int *map, unsigned int p, unsigned int offset);
 
 extern unsigned char snesc_timer_enabled;
-extern unsigned int timers[16];
+extern unsigned int snesc_timers[16];
 extern unsigned int snesc_controllers[4];
 extern unsigned char snesc_do_copy;
 extern unsigned int snesc_oam_table1[256];

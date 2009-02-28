@@ -1,5 +1,9 @@
 .include "hdr.asm"
 
+.ramsection ".registers" bank 0 slot 1
+move_snesc dsb 5
+.ends
+
 .section "graphics" superfree
 
 .macro bankin
@@ -13,6 +17,7 @@
 .macro bankout
     plb
 .endm
+
 
 .accu 16
 .index 16
