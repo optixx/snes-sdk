@@ -1,0 +1,195 @@
+- use short calls for static callees (dubious: functions from one file can end
+  up in different sections)
+- optimize virtual register loads (keep track of what currently resides in
+  real registers; very hairy) in fact, it is not possible at all. We can
+  never tell if a jump target will be inserted somewhere; need to write a
+  separate optimizer pass/program.
+- replace all the shifts for type conversion (very ineffienct on 65816) with
+  ands (done for char, some shifts remain)
+- optimize constant float/int conversion
+- untangle the mess that is libm.asm
+- turn on the extra-complicated long long-safe compare opis only for long long compares
+- optimize .data (or .bss?) section accesses by using absolute instead of long
+  addressing (tricky; I see no way to find out the section of a symbol)
+- optimize bitfield shifting (can do shift & and instead of shift & shift)
+- optimize test branches (right now, a lot of cascaded branches are
+  generated instead of patching them to all go to the same place)
+- fix local static declarations (name collision; done for get_sym_str(), but
+  that's only half the solution; related test 990326-1.c)
+- fix long stack accesses (adjust_stack() doesn't work well because it
+  doesn't know the locals size at runtime; macros seem to be entirely
+  broken)
+- check if the bool casting workaround in 816-gen.c is still necessary and
+  remove it if not
+- translate SNESC library and kernel to C
+- make sure section sorting is done in a stable way (use file_id)
+- make binary default output format for 65816
+
+- calls thru function pointers DONE!
+- relocs for function pointer arrays DONE!
+- get rid of virtual registers DONE! (except for r9, r10)
+- use 16-bit pointers and 16-bit ints DONE!
+- push immediate arguments without loading to reg first DONE!
+- move string constants to ROM DONE!
+- omit prolog/epilog if no locals DONE!
+- integer multiplication, division, modulo DONE! WITH SIGN!
+- implemented (signed/unsigned) opis: +, -, *, /, %, <<, >>, <, >, <=, >=,
+  &, |, ||, ^
+- use labels instead of relocated absolute values for pointers DONE!
+- output all sections that are not garbage DONE!
+- do data sections properly (.ramsection with symbols, data as binary blob,
+  copied at startup) DONE!
+- output .bss as ramsection DONE!
+- only put labels in the sections they belong to; include local labels (e.g.
+  string constants) DONE!
+- skip return address when accessing function parameters DONE!
+- instrument snes9x with memory-mapped debug port (0xfffe) DONE!
+- fix annoying warnings DONE!
+- implement large memory model (code and data) DONE!
+- implement local rvalue loads DONE! (except for symbols; dunno how to
+  trigger that)
+- fix bug in wlalink that fucks up ramsection banks DONE!
+- fix bug in wla-65816 that only allows ramsections in ROM banks DONE!
+- fix bug in TCC that assumes registers to spill always contain ints (too
+  short for long function pointers) DONE!
+- move .bss and .data to banks $7e/$7f and leave LoRAM for stack and
+  registers DONE!
+- fix modulo sign (C99 requires sgn(remainder) == sgn(dividend)) DONE!
+- test/fix modulo DONE!
+- fix missing jump target in gtst (triggered by ||) DONE!
+- automatic test run: run GCC, SNES, then compare output DONE!
+- optimize opis on constants DONE!
+- do not needlessly use a virtual register to do compares DONE!
+- fix char/short casts DONE!
+- fix TCC pushing a pointer to return struct space as int (too short) DONE!
+- test/fix structs (declaration, usage, passing by value) DONE!
+- test/fix bitfields (TCC death shift in cast from int) DONE!
+- remove a lot of redundant stz.b's in 2-byte type ops DONE!
+- fix/test long long DONE! WITH MULL! (no divmod yet, needs external lib; the
+  mull is actually a 1:1 adaption of the 16x16 6502 code; I guess this would
+  work for division, too.)
+- test/fix literal pointer dereferencing DONE!
+- find out how TCC generates its FP constants and fix it to work with Woz code DONE!
+- properly define registers (in ramsection, not as .defines) DONE!
+- implement int/float conversions (currently only ftoi works) DONE!
+- implement/test float parameter passing (receiving works) DONE!
+- test float/(signed) int conversion more intensively DONE!
+- implement macros generating test functions for all data types DONE!
+- fix overflow/underflow handling for float -> (unsigned) int conversion DONE!
+- test unsigned int/float conversion: should be OK
+- fix long long comparisons (need an extra equality test) DONE!
+- fix unsigned > for uint DONE!
+- implement/test float comparisons DONE!
+- teach the damn assembler to autoallocate banks, not just mess them up
+  later :( DONE! (use "superfree" sections, one for each function)
+- fix globals scalars initialized wrong DONE! (unportable code in TCC overwrote
+  because it didn't take target type sizes into account)
+- write systematic typecast test DONE!
+- test/fix int/long long conversion (int -> long long certainly works...) DONE!
+- implement float/(unsigned) long long conversion DONE! (except signed long long ->
+  float, which is implicitly cast to int currently)
+- fix char sign extension DONE! (was broken in several places in different
+  ways) DONE AGAIN! (was particularly broken for long long source type)
+- handle long long -> float conversion properly (should be possible to reuse
+  tcc__ulltof)	DONE!
+- implement & test all opis DONE! (I think, maybe I have missed something)
+- fix inaccuracy in unsigned long long -> float conversion DONE!
+- optimize the ugly way TCC loads the pointer to the upper half of long
+  longs DONE! (worked around yet another TCC long long bug to get it to
+  work)
+- optimize shifts (throw out a few useless compares and convoluted
+  branching) DONE!
+- implement floating point (big one... still looking for 65816 FP lib) DONE!
+  (for +, -, *, /, comparisons and casts; no function library yet)
+- remove lots of obsolete debug output DONE!
+- fix thinko in 32-bit loads DONE! (amazing that looked as if it was working
+  in most cases)
+- use tcc__llfix for float to unsigned int conversions (workaround to
+  prevent overflow) DONE!
+- try some funky arrays (floats, chars, long longs etc.) DONE!
+- startup code breaks if main not in bank 0 DONE!
+- test/fix pointer/int and pointer/long long conversion DONE! (as far as
+  possible; int/pointer works as expected after a small fix to the compare
+  code (handle symbols), long long/pointer is rejected by TCC)
+- test/fix control structures (switch, if, for; while is tested extensively
+  elsewhere) DONE! (gjmp/gsym code needed fix for chained jumps)
+- optimize output routine DONE! (fourfold speed increase)
+- test/fix overflow handling when converting float -> (unsigned) long long DONE!
+- initialized global floats probably don't work (code missing in init_putv()) DONE!
+- optimize indirect loads without displacement (don't load Y) DONE!
+- implement/test long long division (use 6502 16x16 division routine from WDC) DONE!
+- test float arithmetic DONE! (+, -, * work perfectly; / has one single
+  problem dividing 0x7fff by -0x8000, resulting in -1 instead of 0; this is
+  not unlikely to be the result of inaccuracy (an error of 2^-15 would be
+  enough to cause it))
+- when loading long longs to compare reg, load upper word, too DONE! (seems
+  this is wrong in all other code generators; may need fixing for constant
+  case, but I have been unable to trigger it so far -> guarded with error())
+- fold short to int and test DONE! (tested by typedeffing __int as short)
+- implement VT_JMPI (triggered e.g. by comparing long longs for equality)
+  DONE! (trial and error, may not be 100%)
+- systematic test of operations with constants (use unary framework) DONE! (42)
+- combine small functions into one text section (WLA DX barfs if fed more
+  than 255 sections) DONE!
+- merge FP accus and f0/f1 registers to avoid constant shuffling about of FP
+  numbers DONE!
+- test/fix ellipsis (needs va_* macros, should not be that tricky) DONE!
+- implement (32-bit)/test (all) shifts DONE!
+- move runtime lib stuff to libtcc.asm DONE!
+- fix (32-bit)/test (all) modulos DONE!
+- fix strange/ashrdi-1.c (half a pointer is loaded and then derefd; look for
+  ld2 [sp,-12],r0. the long long code (near the shortcut) sets the type for
+  the second word load to VT_INT; changing this to VT_PTR fixes this issue,
+  but creates others) DONE! (worked around by forcing 4 byte loads while in
+  long long code; disabled shortcut as it breaks this test, too)
+- implement merging of multiple .data sections (where? wla? tccelf? external
+  script?) wlalink is the most likely candidate DONE!
+- test section merging DONE! (hw3a.c)
+- introduce file-local symbol concept to wlalink DONE!
+- change (section-)local prefix in wlalink to something less annoying DONE!
+- fix bool casting (same as char) DONE!
+- loads half a pointer again in 20030313-1.c after calling __tccs_bar DONE!
+  (TCC reloaded everything saved to the stack as VT_INT)
+- make VT_ENUM and VT_BOOL unsigned to fix problems with sign extension in
+  bitfields DONE!
+- make sure bitfield values are not recast after being shifted to the right
+  place (breaks _Bool bitfields) DONE!
+- make sure bitfield values are cast before being shifted to the right place
+  (also breaks _Bool bitfields) DONE!
+- fix binary output code so it can handle multiple symbols in one place
+  properly DONE!  (also looks a lot nicer now, both in code and output)
+- implement setjmp, longjmp DONE!
+- implement str*cmp, str*cpy, strrchr, memcmp, memmove, mem*cpy DONE!
+- fix cascaded branches (jump past, not before, the next conditional branch)
+  DONE!
+- truncate constants too long in gen_opi() and warn when doing so DONE!
+- implement TOK_LAND (logical and with numbers) DONE!
+- extend limits.h with (float min/max, char width) DONE!
+- implement/test va_copy() DONE!
+- add __builtin_* aliases for offsetof, abort, va_list DONE!
+- fix memset to return dest pointer DONE!
+- implement (__builtin_)bzero() DONE!
+- fix strchr (don't return NULL when looking for '\0') DONE!
+- implement (__builtin_)ffs() DONE!
+- implement abs() DONE!
+- don't use arithmetic shift if only the shift count is signed DONE!
+- do const long long -> float conversion at compile time DONE!
+- truncate constant integer values before converting to another type DONE!
+- do const to _Bool conversion at compile time DONE!
+- zero structs before initializing them (decl_designator() tends to forget
+  filling in holes when initializing nested structures) DONE! (probably
+  more efficient anyway)
+- don't forget to add offsets to symbols in binary output code DONE!
+- make output code more robust against funky symbol tables (empty
+  or duplicate symbols) DONE!
+- fix hang in Arkanoid demo DONE! (Bozo read a write-only register)
+- port SNESC library and kernel DONE!
+- port Arkanoid demo DONE!
+- fix sprite priority in SNESC kernel DONE!
+- move libraries and startup code into separate directory DONE!
+- split libtcc into libc (standard C functions) and libtcc (functions used
+  internally by TCC) DONE!
+- check why wla needs source file for linking -> it doesn't, just don't
+  write a list file
+- implement retargetable NMI handler DONE!
+- make SNESC internal data symbolic DONE!

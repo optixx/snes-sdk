@@ -1,0 +1,34 @@
+#!/bin/bash
+tests=tests/*
+test -n "$1" && tests="$@"
+for i in $tests
+do
+	echo -n "$i: "
+	if ! ../816-tcc -I../include -Wl,--oformat,binary -DSTACK_SIZE=0x2000 -o ./suite.asm -c $i ; then
+		echo NOCOMPILE
+		continue
+	fi
+        if ! ../../wla_dx/wla-65816 -io ./suite.asm ./suite.obj ; then
+        	echo NOASM
+        	mv suite.asm failtraces/${i#*/}.asm
+        	continue
+        fi
+	if ! ../../wla_dx/wlalink/wlalink -S ../../libs/crt0_snes.obj ../../libs/libm.obj ../../libs/libtcc.obj ../../libs/libc.obj	suite.obj ./test.smc ; then
+		echo NOLINK
+		mv suite.asm failtraces/${i#*/}.asm
+		continue
+	fi
+	#gcc -m32 hw3.c
+	#./a.out >output.gcc || true
+	if ../../snes9x/snes9x ./test.smc 2>/dev/null >/dev/null ; then
+		echo PASS
+		rm -f failtraces/${i#*/}.{asm,trace}
+	else
+		echo "FAIL (exit code $?)"
+		mv suite.asm failtraces/${i#*/}.asm
+		../../snes9x/snes9x ./test.smc -t
+		mv trace.log failtraces/${i#*/}.trace
+	fi
+	xset r on
+done
+rm -f suite.asm .sym suite.obj test.smc

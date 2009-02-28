@@ -1,0 +1,61 @@
+diff -urN /Users/zones/Desktop/HID Utilities Source/b/HID_Config_Utilities.c /Users/zones/Desktop/HID Utilities/a/HID_Config_Utilities.c
+--- /Users/zones/Desktop/HID Utilities Source/b/HID_Config_Utilities.c	Mon Oct 28 19:18:05 2002
++++ /Users/zones/Desktop/HID Utilities/a/HID_Config_Utilities.c	Sat Mar 26 17:52:58 2005
+@@ -127,8 +127,12 @@
+ 
+ 					if (((initialValue + delta) < value) || ((initialValue - delta) > value))
+ 					{
+-						found = 1;
+-						break;
++						// XXX: hack for the strange input from my new PowerBook G4...
++						if (strcmp(pDevice->manufacturer, "Apple") || strcmp(pDevice->product, "Trackpad"))
++						{
++							found = 1;
++							break;
++						}
+ 					}
+ 				}
+ 				pElement = HIDGetNextDeviceElement (pElement, kHIDElementTypeInput); 
+diff -urN /Users/zones/Desktop/HID Utilities Source/b/HID_Utilities.c /Users/zones/Desktop/HID Utilities/a/HID_Utilities.c
+--- /Users/zones/Desktop/HID Utilities Source/b/HID_Utilities.c	Mon Oct 28 18:59:28 2002
++++ /Users/zones/Desktop/HID Utilities/a/HID_Utilities.c	Sat May 15 11:44:22 2004
+@@ -1232,23 +1232,25 @@
+ 			// malformed device ending in collection
+ 			if (pElement->type == kIOHIDElementTypeCollection)
+ 				HIDReportError ("Malformed device: found collection at end of element chain.");
+-			// walk back up tree to element prior to first collection ecountered and take next element
+-			while (NULL != pElement->pPrevious)
++			// Walk up the tree, until we encounter a collection
++			// that has a sibling that we need to walk down.
++			while (1)
+ 			{
++				// Walk one element up
+ 				pPreviousElement = pElement;
+-				pElement = pElement->pPrevious; // look at previous element
+-									// if we have a collection and the previous element is the branch element (should have both a colection and next element attached to it)
+-		 // if we found a collection, which we are not at the sibling level that actually does have siblings
+-				if (((pElement->type == kIOHIDElementTypeCollection) && (pPreviousElement != pElement->pSibling) && pElement->pSibling) ||
+-		// or if we are at the top
+-		(NULL == pElement->pPrevious)) // at top of tree
+-					break;
++				pElement = pElement->pPrevious;
++				// If we found a collection, and it has
++				// no sibling, or we have already walked
++				// its sibling path, walk that way
++				if ((pElement->type == kIOHIDElementTypeCollection) && (pPreviousElement != pElement->pSibling) && pElement->pSibling)
++				{
++					pElement = pElement->pSibling;
++					return hid_GetDeviceElement (pElement, typeMask);
++				}
++				// If we have walked all the way up, exit
++				if (NULL == pElement->pPrevious)
++					return NULL;
+ 			}
+-			if (NULL == pElement->pPrevious)
+-				return NULL; // got to top of list with only a collection as the first element
+-				 // now we must have been down the child route so go down the sibling route
+-			pElement = pElement->pSibling; // element of interest
+-			return hid_GetDeviceElement (pElement, typeMask); // otherwise return this element
+ 		}
+ 	}
+ 	return NULL;

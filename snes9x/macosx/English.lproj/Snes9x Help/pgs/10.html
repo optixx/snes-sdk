@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta http-equiv="content-style-type" content="text/css">
+		<meta name="description" content="Miscellaneous">
+		<link href="../sty/style.css" rel="stylesheet">
+		<style>
+			<!-- ul { list-style-type: none; } -->
+		</style>
+		<title>Miscellaneous</title>
+	</head>
+	<body>
+		<h2>Miscellaneous</h2><br>
+		<h3>Where the Files are Stored</h3>
+		<p>
+			You can choose where Snes9x will look for cheats (.cht), SRAM files (.srm), freeze files (.frz), screenshots (.png), etc in 'File' tab of 'Preferences' dialog.
+		</p>
+		<ul>
+			<li>
+				<table>
+					<tr valign="top">
+						<td width="200">Snes9x Folder</td>
+						<td>the subdirectories will be searched in the same folder as Snes9x.</td>
+					</tr>
+					<tr valign="top">
+						<td width="200">ROM Folder</td>
+						<td>the files will all be in the same folder as the ROM being used.</td>
+					</tr>
+					<tr valign="top">
+						<td width="200">Application Support Folder</td>
+						<td>the subdirectories will be created in /Users/yourname/Library/Application Support/Snes9x and searched there.</td>
+					</tr>
+				</table>
+		</ul>
+		<br>
+		<h3>Which Display is Used in Full Screen Mode</h3>
+		<p>
+			If you use two or more displays, in full screen mode Snes9x uses the display where the game window is shown.
+		</p><br>
+		<h3>Using Graphics Packs</h3>
+		<p>
+			The games which have SPC7110 chip in their cartridges need a set of files called Graphics Pack. To use Graphics Packs,
+		</p>
+		<ol>
+			<li>If you select 'Snes9x Folder' or 'Application Support Folder' in 'Preferences' dialog, create a 'Packs' folder in that directory.
+			<li>Put the Graphics Pack folder (or its alias) into the 'Packs' folder. if you select the 'ROM Folder' option in 'Preferences' dialog, put it into the same directory as the ROM image.
+			<li>Rename the name of the Graphics Pack folder (or its alias) to the one listed below. Or else you can use the same name as the ROM image (except extension), for example if your ROM image is 'FEOEZ.smc', Graphics Pack folder can be named 'FEOEZ'.
+		</ol>
+		<ul>
+			<li>
+				<table>
+					<tr valign="top">
+						<td width="330">Super Power League 4 (J)</td>
+						<td>SPL4-SP7</td>
+					</tr>
+					<tr valign="top">
+						<td width="330">Momotarou Dentetsu Happy (J)</td>
+						<td>SMHT-SP7</td>
+					</tr>
+					<tr valign="top">
+						<td width="330">Far East Eden of Zero (J)</td>
+						<td>FEOEZSP7</td>
+					</tr>
+					<tr valign="top">
+						<td width="330">Far East Eden of Zero Shonen Jump no Shou (J)</td>
+						<td>SJUMPSP7</td>
+					</tr>
+				</table>
+		</ul>
+		<p>
+			Note that users who use UFS disk format should take care of upper/lower case. The file name itself is upper case, but its extension is lower case.
+		</p>
+		<p>
+			The games which have S-DD1 chip in their cartridges no longer need Graphics Packs, but you can still use them for speed improvement.
+		</p>
+		<ul>
+			<li>
+				<table>
+					<tr valign="top">
+						<td width="330">Star Ocean (J)</td>
+						<td>SOCNSDD1</td>
+					</tr>
+					<tr valign="top">
+						<td width="330">Street Fighter Alpha 2 (US)</td>
+						<td>SFA2SDD1</td>
+					</tr>
+					<tr valign="top">
+						<td width="330">Street Fighter Alpha 2 (E)</td>
+						<td>SFA2SDD1.E</td>
+					</tr>
+					<tr valign="top">
+						<td width="330">Street Fighter Zero 2 (J)</td>
+						<td>SFZ2SDD1</td>
+					</tr>
+				</table>
+		</ul><br>
+		<h3>Using IPS Patch</h3>
+		<p>
+			Snes9x automatically patches without overwriting the ROM image.
+		</p>
+		<ol>
+			<li>If you select 'Snes9x Folder' or 'Application Support Folder' in 'Preferences' dialog, create 'IPSs' folder in that directory.
+			<li>Put the IPS patch file into the 'IPSs' folder. if you select 'ROM folder' in 'Preferences' dialog, put it into the same directory as the ROM image.
+			<li>Rename the name to the same as the ROM image (except extension, it is '.ips').
+			<li>If you want to use multiple IPS files at a time, set their extensions to '.000.ips', '.001.ips', ...
+		</ol><br>
+		<h3>SPC File Dumping</h3>
+		<p>
+			SPC file (.spc) is the freeze state of only sound part, so it is known as SNES music data file. Dump the SPC file by Snes9x and play the file by SPC players like Audio Overload and PSFPlay.<br>
+			Assign your gamepad button or keyboard to 'SPC' button in 'Configure Controllers' or 'Configure Keyboard' dialog. To dump the SPC file, press 'SPC' button while playing a game, or choose 'Save SPC File at Next Note-on' in 'Option' menu and resume the game.
+		</p><br>
+		<h3>Music Box</h3>
+		<p>
+			Music Box is to play the game music without playing the game. Pause the game and enter Music Box by 'Music Box...' in 'Option' menu, and you can enjoy the music with doing other things like surfing Internet.<br>
+			There are two modes for playing music. Select in 'Others' tab in 'Preferences' dialog.
+		</p>
+		<ul>
+			<li>
+				<table>
+					<tr valign="top">
+						<td width="200">Sound Emulation Only</td>
+						<td>in a shooting game, you may listen BGM endlessly. (Music plays.)</td>
+					</tr>
+					<tr valign="top">
+						<td width="200">Whole Emulation</td>
+						<td>in a shooting game, you may hear explosion sound and gameover music. (Music plays and the CPU continues to execute the emulation.)</td>
+					</tr>
+				</table>
+		</ul>
+		<p>
+			Each mode stores the emulation state before entering Music Box, and restores after closing Music Box. 'Whole Emulation' makes a temporary freeze file.
+		</p><br>
+		<h3>Sound Effect</h3>
+		<p>
+			You can use Apple's Matrix Reverb / Graphic Equilizer and enhance the game sounds. Call 'Sound Effect' dialog from 'Preferences' / 'Music Box' dialog.
+		</p><br>
+		<h3>Core Image Filters</h3>
+		<p>
+			In Mac OS X 10.4 or later, some of the Core Image filters can be applied to the game screen. Turn on 'Use Core Image' option in 'Preferences' dialog and choose 'Core Image Filter...' menu while playing a game.
+		</p><br>
+		<p align="center">
+			&lt;
+			<a href="09.html">Prev</a>&nbsp;&nbsp;
+			<a href="../index.html">Top</a>&nbsp;&nbsp;
+			<a href="11.html">Next</a>
+			&gt;
+		</p>
+	</body>
+</html>

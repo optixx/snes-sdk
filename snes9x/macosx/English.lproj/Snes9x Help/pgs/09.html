@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta http-equiv="content-style-type" content="text/css">
+		<meta name="description" content="How to netplay">
+		<link href="../sty/style.css" rel="stylesheet">
+		<style>
+			<!-- ul { list-style-type: none; } -->
+		</style>
+		<title>Netplay Support</title>
+	</head>
+	<body>
+		<h2>Netplay Support</h2>
+		<p>
+			Netplay support allows up to five players to sit in front of different computers and simultaneously play the same game, or just watch someone else play a game. All the computers have to be connected to a network that allows TCP/IP traffic to flow between them; this includes a local Ethernet-style network, a direct-cable connection, or, if you're lucky and have short ping times, the Internet.
+		</p>
+		<p>
+			Snes9x netplay inevitably synchronizes all the computers at the sacrifice of the speed of input response. Note that this feature is Mac OS X only - not compatible with Windows and other platforms.
+		</p><br>
+		<h3>How to Netplay</h3>
+		<p>
+			The player with the fastest Mac should act as the server (S). The others are clients (C). Server should open the port 6096/TCP.<br>
+			Here is the workflow to netplay with up to five players.
+		</p>
+		<ul>
+			<li>
+				<table>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>If you guys want to play with Multi Player 5, choose 'Multi Tap' in 'Input Device' in 'Emulation' menu. (Clients don't need to select it.)</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>Open the ROM image. Pause the game.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>Choose 'Server...' in 'Netplay' menu. The clients list appears. The first client is yourself.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>Choose 'Client...' in 'Netplay' menu.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>Input server's IP address and your name. Press 'Connect' button.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>The clients appear in the clients list with 'Connecting' status.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>A ROM load dialog appears. Open the same ROM image as server's.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>Wait until all clients become 'Ready'. Press 'Play' button.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>The players list dialog appears. Press 'OK' button.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>Netplay starts.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>The game is reset and netplay starts.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>Adjust the timing by '2P-L' and '2P-R' button. If 'Show Onscreen Information' is active in 'Preferences' dialog, a value appears in both the server's and client's game screen. Increasing this value will smooth the frame rate, but also delay the input response.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)(C)</td>
+						<td>All functions (screenshot, etc.) are unusable.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>Clients cannot stop netplay by themselves.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>Netplay stops when server pauses the game.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(S)</td>
+						<td>SRAM file may be overwritten by this play.</td>
+					</tr>
+					<tr valign="top">
+						<td width="50">(C)</td>
+						<td>SRAM file won't be overwritten by this play.</td>
+					</tr>
+				</table>
+		</ul><br>
+		<p align="center">
+			&lt;
+			<a href="08.html">Prev</a>&nbsp;&nbsp;
+			<a href="../index.html">Top</a>&nbsp;&nbsp;
+			<a href="10.html">Next</a>
+			&gt;
+		</p>
+	</body>
+</html>

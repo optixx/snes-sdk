@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="description" content="Technical information">
+		<link href="../sty/style.css" rel="stylesheet">
+		<title>Technical Information</title>
+	</head>
+	<body>
+		<h2>Technical Information</h2><br>
+		<h3>What's Emulated?</h3>
+		<ul>
+			<li>The 65c816 main CPU.
+			<li>The Sony SPC700 sound CPU.
+			<li>SNES variable length machine cycles.
+			<li>8 channel DMA and H-DMA (raster effects).
+			<li>All background modes, 0 to 7.
+			<li>Sound DSP, with eight 16-bit, stereo channels, compressed samples, hardware attack-decay-sustain-release volume processing, echo, pitch modulation and digital FIR sound filter.
+			<li>8x8, 16x8 and 16x16 tile sizes, flipped in either direction.
+			<li>32x32, 32x64, 64x32 and 64x64 screen tile sizes.
+			<li>H-IRQ, V-IRQ and NMI.
+			<li>Mode 7 screen rotation, scaling and screen flipping.
+			<li>Vertical offset-per-tile in modes 2, and 4.
+			<li>Horizontal offset-per-tile in modes 2, 4 and 6.
+			<li>256x224, 256x239, 512x224, 512x239, 512x448 and 512x478 SNES screen resolutions.
+			<li>Sub-screen and fixed color blending effects.
+			<li>Mosaic effect.
+			<li>Single and dual graphic clip windows, with all four logic combination modes.
+			<li>Color blending effects only inside or outside a window.
+			<li>128 8x8, 16x16, 32x32 or 64x64 sprites, flipped in either direction.
+			<li>SNES palette changes during frame (15/16-bit internal rendering only).
+			<li>Direct color mode - uses tile and palette-group data directly as RGB value.
+			<li>Super FX, a 21/10MHz RISC CPU found in the cartridge of several games.
+			<li>S-DD1, a data decompression chip used only in Star Ocean and Street Fighter 2 Alpha. The compression algorithm is integrated into Snes9x, but you may still use the old graphics pack cheat as a speed boost.
+			<li>SPC7110, similar in use to S-DD1, but the algorithm is still unknown.
+			<li>S-RTC, a real-time clock chip. Dai Kaijyu Monogatari II is the only game that uses it.
+			<li>SA-1, a faster version of CPU found in the main SNES unit together with some custom game-accelerator hardware.
+			<li>C4, a custom Capcom chip used only in Megaman X2 and X3. It's a sprite scaler/ rotator/line drawer/simple maths co-processor chip used to enhance some in-game effects.
+			<li>OBC1 is a sprite management chip. Metal combat is the only game to use this.
+			<li>Greater DSP-1 support, enough that all games should load, but some may have graphical glitches.
+			<li>DSP-2 support. Only used in Dungeon Master.
+			<li>DSP-4 support. Used in Top Gear 3000.
+			<li>SNES Mouse.
+			<li>Super Scope (light gun) emulated using computer mouse.
+			<li>Multi Player 5 - allowing up to five people to play games simultaneously on games that support that many players.
+			<li>Game Genie and Action Replay cheat codes.
+			<li>Multiple ROM image formats, with or without a 512 byte copier header.
+			<li>Single or split images, compressed using zip and gzip, and interleaved in one of two ways.
+			<li>Auto SRAM (battery backed RAM) loading and saving.
+			<li>Freeze-game support, now portable between different Snes9x ports.
+			<li>4-point gaussian interpolated sound.
+			<li>Justifier support. Konami's Justifier is similar to the Super Scope and used in Lethal Enforcers.
+			<li>Seta-10 CPU (ST010). This is used F1 Race of Champions 2.
+			<li>Fixed color and mosaic effects in SNES hi-res. (512x448) modes.
+			<li>Offset-per-tile in mode 6.
+			<li>Pseudo hi-res.
+			<li>Mosaic effect on mode 7.
+			<li>Satellaview and BS-X, partially.
+		</ul><br>
+		<h3>What's Not?</h3>
+		<ul>
+			<li>DSP-1 support not complete, enough to play Mario Kart, Pilotwings and many others. All DSP-1 games should boot, but may display graphical errors.
+			<li>Any other odd chips that manufactures sometimes placed inside the cartridge to enhance games and as a nice side-effect, also act as an anti-piracy measure. (DSP-3, SETA 11 and SETA 18, as examples)
+			<li>A couple of SPC700 instructions that I can't work exactly out what they should do.
+			<li>The expansion slot found in many carts.
+		</ul><br>
+		<h3>Custom Chips</h3><br>
+		<h4>Super FX</h4>
+		<p>
+			The Super FX is a 10.5/21MHz RISC CPU developed by Argonaut Software used as a game enhancer by several game tiles. Support is still a little buggy but most games work very well, if a little slowly. Released SNES Super FX games included Yoshi's Island (best single-player game on SNES, if you like platform games), Doom, Winter Gold, Dirt Trax FX, StarFox, Stunt Race FX and Vortex.
+		</p><br>
+		<h4>S-DD1</h4>
+		<p>
+			The S-DD1 is a custom data decompression chip that can decompress data in real-time as the SNES DMA's data from the ROM to RAM. Only two games are known to use the chip: Star Ocean and Street Fighter Alpha 2.
+		</p><br>
+		<h4>SPC7110</h4>
+		<p>
+			The SPC7110 is a compression and memory mapping chip. It provides a few extra features, as well. It functions as an RTC interface, and has a multiply/divide unit that has more precision than the SNES. The SPC7110 is found only in 4 games: Super Power League 4, Far East of Eden Zero, Far East of Eden Zero - Shounen Jump no Shou, and Momotaro Densetsu Happy.<br>
+			This chip uses some unknown compression algorithms, so to actually support the games using this, pre-decompressed graphics packs is necessary.
+		</p><br>
+		<h4>SA-1</h4>
+		<p>
+			The SA-1 is a fast, custom 65c816 8/16-bit processor, the same as inside the SNES itself, but clocked at 10MHz compared to a maximum of 3.58MHz for the CPU inside the SNES.<br>
+			The SA-1 isn't just a CPU; it also contains some extra circuits developed by Nintendo which includes some very fast RAM, a memory mapper, DMA and, several real-time timers.<br>
+			Snes9x includes emulation of most features of the SA-1, enough to play all SA-1 games I've located so far, these include Mario RPG, Kirby Superstar and Parodius 3.
+		</p><br>
+		<h4>C4</h4>
+		<p>
+			The C4 is custom Capcom chip used only in the Megaman X2 and Megaman X3 games. It can scale and rotate images, draw line-vector objects and do some simple maths to rotate them.
+		</p><br>
+		<p align="center">
+			&lt;
+			<a href="12.html">Prev</a>&nbsp;&nbsp;
+			<a href="../index.html">Top</a>&nbsp;&nbsp;
+			<a href="14.html">Next</a>
+			&gt;
+		</p>
+	</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="description" content="References">
+		<link href="../sty/style.css" rel="stylesheet">
+		<title>References</title>
+	</head>
+	<body>
+		<h2>References</h2><br>
+		<h3>Preferences Dialog</h3><br>
+		<h4>Graphics Tab</h4>
+		<dl>
+			<dt>Full Screen Mode
+			<dd>Toggles full screen/windowed mode. Press ESC to hide full screen window and pause emulation.
+			<dt>Switch Monitor Resolution
+			<dd>Toggles between scaling full screen graphics to the current screen resolution or changing the screen resolution to fit Snes9x's needs.
+			<dt>Show Frame Rate
+			<dd>Toggles display of the framerate on/off.
+			<dt>Mode 7 Smoothing
+			<dd>Toggles mode 7 bi-linear filtering on/off. Mode 7 is used in many 3D-like games.
+			<dt>Transparency Effects
+			<dd>Toggles transparency effects on/off. Transparency is used in almost all games so this option is just for speed-hack.
+			<dt>Video Mode - Direct
+			<dd>Directly copies the SNES screen bitmap to the Window buffer. This mode is for 32,768 colors monitor only.
+			<dt>Video Mode - OpenGL
+			<dd>Draws the SNES screen bitmap as an OpenGL texture.
+			<dt>Multitask
+			<dd>When this option is on, the rendering process in all Direct modes and OpenGL Super 2xSaI/2xSaI/Super Eagle/EPX/hq2x/TV modes are separated from the emulation thread. May be useful for dual processor Macs.
+			<dt>Keep Overscanned Height
+			<dd>Keeps the screen height always 239/478, for some games that change screen height frequently.
+			<dt>Use 32 Bit Color
+			<dd>Uses 16,777,216 colors monitor in OpenGL mode.
+			<dt>Sync to Vertical Blank
+			<dd>Synchronizes the render timing to the monitor's vertical refresh rate.
+			<dt>Stretch Image in Full Screen Mode
+			<dd>When in full screen mode, stretch the image to fill the screen.
+			<dt>Aspect Ratio
+			<dd>The aspect ratio of above option; the left is proportional and the right is full width of the monitor.
+			<dt>Use Screen Curvature
+			<dd>Adds a warp effect in OpenGL mode like a CRT-based television.
+			<dt>Warp
+			<dd>The degree of above option.
+			<dt>Use Core Image
+			<dd>Enables Core Image filer in OpenGL mode.
+			<dt>Filter
+			<dd>Opens 'Core Image Filter Setting' dialog.
+		</dl><br>
+		<h4>Sound Tab</h4>
+		<dl>
+			<dt>Enable Sound Emulation
+			<dd>Enabled sound playback. If this option is off, Snes9x cuts off sound emulation and some games won't work correctly.
+			<dt>16 Bit Playback
+			<dd>Enabled 16-bit playback instead of 8-bit.
+			<dt>Stereo
+			<dd>Enabled stereo sound instead of mono.
+			<dt>Reverse Stereo
+			<dd>Swaps the stereo channels.
+			<dt>Gaussian Interpolation
+			<dd>Smoothens the sound as the real SNES does.
+			<dt>Volume Envelope Height Reading
+			<dd>Find the difference with your ears :P
+			<dt>Echo Effects
+			<dd>Toggles the SNES echo effect on/off.
+			<dt>Master Volume Control
+			<dd>When this option is off, the volume may be rough.
+			<dt>Playback Rate
+			<dd>The real SNES is 32kHz.
+			<dt>Sample Decoder
+			<dd>Try to change sound decoder if you feel the sound is wrong compared with the real SNES.
+			<dt>Mix Interval
+			<dd>Smaller value will eliminate sound delay but increase the CPU load. Set 0 to use OS default.
+			<dt>Pitch
+			<dd>Sound pitch. 2.00 is one octave higher than 1.00.
+			<dt>Volume
+			<dd>Volume of the whole Snes9x sounds.
+			<dt>Effect
+			<dd>Opens 'Sound Effect' dialog.
+		</dl><br>
+		<h4>File Tab</h4>
+		<dl>
+			<dt>Save Data in
+			<dd>Choose the folder where Snes9x will look for files.
+			<dt>Auto Save SRAM
+			<dd>Updates SRAM file when SRAM contents are modified. This may cause frequent disk access.
+			<dt>SPC7110 Packs
+			<dd>Choose how to read the SPC7110 Graphics Pack, before launching the SPC7110 games. Loading all data into RAM will need a lot of memory spaces.
+			<dt>S-DD1 Packs
+			<dd>Choose whether to use the S-DD1 Graphics Pack or not, before launching the S-DD1 games. Using Graphics Pack will be a bit faster.
+		</dl><br>
+		<h4>Speed Tab</h4>
+		<dl>
+			<dt>CPU Cycle Percentage Hack
+			<dd>This option changes H-IRQ timing and will 'fix' some games' glitches, but breaks many other games. Need to re-launch the game when changed.
+			<dt>Enable Internal Speed Ups
+			<dd>Skips internal CPU emulation until the next event comes. Need to re-launch the game when changed.
+			<dt>Frame Skip
+			<dd>Auto is recommended.
+			<dt>Speed in Turbo Mode
+			<dd>The emulation speed when turbo mode (fast forward) is on.
+		</dl><br>
+		<h4>Others Tab</h4>
+		<dl>
+			<dt>Minimize CPU Usage
+			<dd>Prevents Snes9x from using 100% of your CPU. Recommended for laptops.
+			<dt>Toggle Turbo Button
+			<dd>Sets 'Turbo' (fast forward) button as a toggle switch.
+			<dt>Show Onscreen Information
+			<dd>Shows messages from Snes9x on the game screen. When off, messages are put in the standard console.
+			<dt>Open Choose ROM Image Dialog at Startup
+			<dd>Choose whether the open ROM dialog should open when Snes9x is opened.
+			<dt>Show Dates and Times in Freeze State Selection Screen
+			<dd>Shows time stamps on thumbnails in freeze/defrost screen.
+			<dt>Save Window Size and Position
+			<dd>Saves the sizes and positions of the game window and dialogs so they come back to the same place.
+			<dt>Use IPS Patch
+			<dd>When this option is on, Snes9x automatically loads the .ips file and patch the ROM image.
+			<dt>Boot Up BS Games from BS-X
+			<dd>Starts BS games from BS-X town.
+			<dt>When in Background
+			<dd>Choose the behavior of Snes9x when it is in back of other applications.
+			<dt>Music Box
+			<dd>Choose the behavior of Music Box; 'Sound Emulation Only' to only emulate the music system, and 'Whole Emulation' to also emulate the CPU. Music that depends on the CPU running will not sound right without 'Whole Emulation.'
+		</dl><br>
+		<p align="center">
+			&lt;
+			<a href="13.html">Prev</a>&nbsp;&nbsp;
+			<a href="../index.html">Top</a>&nbsp;&nbsp;
+			<a href="15.html">Next</a>
+			&gt;
+		</p>
+	</body>
+</html>

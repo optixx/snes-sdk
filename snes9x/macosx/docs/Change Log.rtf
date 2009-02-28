@@ -1,0 +1,218 @@
+{\rtf1\mac\ansicpg10001\cocoartf824\cocoasubrtf380
+{\fonttbl\f0\fnil\fcharset77 LucidaGrande;\f1\fnil\fcharset77 LucidaGrande-Bold;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11904\paperh16836\margl1440\margr1440\vieww12400\viewh12920\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+
+\f0\fs24 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+
+\f1\b \cf0 ChangeLog
+\f0\b0 \
+\
+\
+1.5\
+\
+- Read 'changes.txt' first.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 - (OSX) Added turbo speed up/down buttons to keyboard and controller maps. (Ryan Vogt)\
+- (OSX) Autofire toggling is now independent for each controller button. (Ryan Vogt, zones)\
+- (OSX) Added Alt and TC buttons to keyboard and controller maps, and options to the Autofire dialog for toggling autofire in-game with Alt and restricting autofire to when TC is pressed. (Ryan Vogt, zones)\
+- (OSX) Keyboard button for pausing the emulation loop is now mappable. (Ryan Vogt)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+\cf0 - (OSX) Made the game window, Cheat Finder and Cheat Entry resizable. (zones)\
+- (OSX) Fixed flickering issue in OpenGL mode. (zones)\
+- (OSX) Fixed some minor problems with Tiger. (zones)\
+- (OSX) Fixed random input issue which is sent from the track pad of certain PowerBooks. (zones)\
+- (OSX) Fixed the forcible termination in QuickTime recording that occurs when no compression settings are configured. (zones)\
+- (OSX) Multi monitors support in full screen mode. (zones)\
+- (OSX) Rewrote some old-fashioned codes internally. (zones)\
+- (OSX) Removed 'Receive Event in Window Mode' option. (zones)\
+- (OSX) Removed 'Swap 1P and 2P' menu. Use F6 key instead. (zones)\
+- (OSX) Removed 'Hide/Show SuperScope Cursor" menu. Now Snes9x has its own cursor internally. (zones)\
+- (OSX) Added 'Boot Up BS Games from BS-X' option. (zones)\
+- (OSX) Added benchmark test. (zones)\
+- (OSX) Added constant frame rate option. (zones)\
+- (OSX) Now Snes9x keeps your Mac awake while playing games. (zones)\
+- (OSX) Added EPX and hq2x filters. (zones)\
+- (OSX) Added simple Core Image filters support for Tiger. (zones)\
+- (OSX) Fixed byte order issues for Intel Mac. (zones)\
+- (OSX) Changed the behavior of the SNES mouse in fullscreen mode to avoid the 'invisible wall' problem. (zones)\
+- (OSX) Universal Binary. (zones)\
+\
+1.43\
+\
+- Read 'changes.txt' first.\
+- (OSX) Now requires OS X 10.2 or later. (zones)\
+- (OSX) Reduced CPU usage by passing the delay value in microseconds to usleep() instead of a hard loop. (Steven Seeger)\
+- (OSX) Updated ReadMe and FAQ, moved ReadMe to Help menu. (Steven Seeger, zones)\
+- (OSX) Added help tags in Preferences dialog. (Steven Seeger, zones)\
+- (OSX) Added some more options in Preferences dialog. (zones)\
+- (OSX) Upgraded several dialogs to HIToolbox based. (zones)\
+- (OSX) Added sound channel on/off. (zones)\
+- (OSX) Added QuickTime export. Note that there is no sound during recording. (zones)\
+\
+1.43 WIP 1\
+\
+- Read 'changes.txt' first.\
+- (OSX) Fixed bug in Apple's HID Utilities. Multiple joysticks connected to a Super Dual Box (and likely other joypad converters) now work correctly. (Sander De Graaf {\field{\*\fldinst{HYPERLINK "http://rotzorg.org/emu-fix/"}}{\fldrslt http://rotzorg.org/emu-fix/}})\
+- (OSX) Optimized Small mode, TV mode, and 2xSaI mode. (Mr VacBob)\
+- (OSX) Enhanced MusicBox. (107)\
+- (OSX) Changed the behavior of Direct Window mode. (zones)\
+- (OSX) Enabled on-screen information option. (zones)\
+- (OSX) Added some features for OpenGL full screen mode. (zones)\
+- (OSX) Added experimental netplay support; probably will be replaced in the future. OSX-OSX only. (zones)\
+\
+1.42 (v49)\
+\
+- (OSX) Fixed the problem that causes crash in OSX 10.1. (zones)\
+- (OSX) Added some features in Cheat Finder. (zones)\
+- (OSX) Fixed the bug in Cheat Entry that is related to multibyte language. (zones)\
+- (OSX) Modified the behavior of Freeze/Defrost screen internally. (zones)\
+- (OSX) Changed OpenGL code again, which effects nothing for my Pismo, but should work in later Mac. Thanks to testers ! (zones) \
+\
+1.42 (v47)\
+\
+- Modified color subtraction behavior experimentally. (zones)\
+- (OSX) Slightly changed OpenGL code which effects nothing for me. (zones)\
+\
+1.42 (v46)\
+\
+- Read 'changes.txt' first. (UI changes in this text are for Win32 or Unix.)\
+- Added S-DD1 on-the-fly decompression option for 1.42. (zones)\
+- Removed 'Cache Decoded Samples' option. (zones)\
+- Changed color blending mode. (zones)\
+- (OSX) Added the option that forces overscanned height screen to prevent 'jump' issue. (zones)\
+- And other several bug fixes. (zones)\
+\
+1.41-1 (v43.1)\
+\
+- (OSX) I hope this update fixes some critical problems that occur on some hardwares... no sound, reverb is too noisy, etc. Thanks to testers ! (zones)\
+\
+1.41-1 (v43)\
+\
+- (OSX) Reworked all of the sound play parts. (zones)\
+- (OSX) Added some sound effect options (requires 10.2 or later). (zones)\
+- (OSX) Internally reworked Open ROM dialog. (zones)\
+- (OS9) Added RAVE support. (zones)\
+- Changed the preferences file. (zones)\
+- Fixed the bug that ROM Information dialog sometimes reports wrong information. (zones)\
+\
+1.41-1 (v39)\
+\
+- Added two options in Open ROM dialog, and removed related options from Preferences dialog. (zones)\
+- Added memory usage limitation for SPC7110 graphics packs. (zones)\
+- Fixed the bug that the automatic fire doesn't work after you restart your Mac. (zones)\
+- Added an option that saves windows' positions. (zones)\
+- (OSX) Modified the detection of hat switches. (zones)\
+- (OS9) Fixed the problem that open dialogs are eager to search volumes via network. (zones)\
+\
+1.41-1 (v36)\
+\
+- Sync version number with Win32/Unix ports (1.41-1 changes doesn't affect non-x86 port).\
+- Fixed the bug that SPC7110 pack read setting doesn't work properly. (zones)\
+- Added 'Copy to Clipboard' button in ROM Information dialog. (zones)\
+\
+1.41 (v34)\
+\
+- Sync with 1.41. Read 'CHANGES.TXT' for more details.\
+- Fixed the incorrect cart name shown in ROM Information dialog. (107, zones)\
+- Changed the behavior of the window mode (but OpenGL-window mode only). (zones)\
+- Modified the SNES mouse speed. (zones)\
+- Modified Open Recent menu to show the last opened ROM image at the top. (zones)\
+\
+1.40 (v31)\
+\
+- Read 'CHANGES.TXT' first.\
+- Added Justifier (Light Gun) interface, in sync with 1.40. (zones)\
+- Changed screenshot timing, in sync with 1.40. (zones)\
+- Added some features for Music Box. (107, zones)\
+- Changed handling of Graphics Packs a bit. (zones)\
+\
+June 1, 2003\
+\
+- Fixed again the gamepad's problem for Thrustmaster's.\
+- Oops, TV mode was incorrect. Fixed.\
+- Fixed the bug that some cheat codes couldn't be used (from SNES9x Development Forum).\
+\
+May 18, 2003\
+\
+- Fixed the gamepad's problem when using a hat switch.\
+- Fixed Yoshi's Island ROM detection bug.\
+- Improved TV mode, Direct-Blocky mode a bit.\
+\
+May 11, 2003\
+\
+- A small fix for STAR FOX problem.\
+\
+May 6, 2003\
+\
+- Rewrote Cheat Finder.\
+- Removed Cheat List. Use Cheat Entry instead.\
+- It seems that G3 build and G4 build are the same (altivec is not used), so I stopped dividing builds.\
+\
+April 29, 2003\
+\
+- Added ROM information dialog.\
+- Fixed incorrect calculation of  BS ROM checksum.\
+\
+April 20, 2003\
+\
+- Fixed the bug crashing in freeze screen on 10.1.x.\
+- Fixed the bug that the game resumes even if you double-click the title bar.\
+\
+April 17, 2003\
+\
+- Added 'Open Recent' menu.\
+- Added 'Freeze State to...', 'Defrost State from...' menus.\
+- Added volume control and more playback rate items (32kHz, etc.)\
+- In Windowed mode you can resume game by double-clicking the window.\
+- Date and time are shown in the Freeze Screen.\
+- Warning dialog is appeared if the ROM image has bad checksum.\
+- Fixed MusicBox's bug that the tempo is a bit faster on NTSC games.\
+- Now always forcing interleave2 to Yoshi's Island (PAL).\
+- Many internal changes for more suitable for OS X.\
+\
+April 7, 2003\
+\
+- This is the test version.\
+- Compiled with additional optimization. \
+- This may be effective on some heavy games like Super Mario Kart, Marvelous, etc. (Thanks to 150.)\
+- Applied some fixes recently mentioned in SNES9x Forum.\
+- Applied DreamSNES's C4 code uploaded in SNES9x Forum before . (Thanks to Peter, one of DreamSNES authors.)\
+\
+April 5, 2003\
+\
+- Added automatic fire.\
+\
+March 30, 2003\
+\
+- Added OpenGL-2xSAI/EAGLE/TV mode (but these are very slow).\
+- Note: 'Multitask' option is valid in above three and 'Direct' modes.\
+- Arranged menu again.\
+\
+March 26, 2003\
+\
+- Probably improved OpenGL rendering speed a bit.\
+- Add 'Sync to the Vertical Black in OpenGL mode' option.\
+\
+March 22, 2003\
+\
+- Now included PB1400c's icons.\
+- Fixed several bugs.\
+- Supported reading ZIP archive.\
+- Added 'Save into Application Support Folder (~/Library/Application Support/SNES9X/) as an option.\
+- 'IPSs' folder is now available. Put '.ips' into this folder.\
+- Changed two buttons' behavior. 'Fast Forward' and 'Super Scope Turbo' are now toggle buttons.\
+\
+March 9, 2003\
+\
+- MutiTap (Multi Player) is maybe supported. (I can't check it by myself.)\
+- 3P-5P should use joypads.\
+\
+March 2, 2003\
+\
+- Added two options.\
+- CPU Cycle Percentage ... something like 'overclock'. (-h or -cycles option in Windows version)\
+- Enable Internal Speed Ups ... (-speedhacks option in Windows version)\
+}
