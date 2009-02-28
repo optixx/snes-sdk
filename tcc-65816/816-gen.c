@@ -297,7 +297,23 @@ void load(int r, SValue* sv)
         }
       }
       else {	// deref constant pointer
-        error("ld [%d],tcc__r%d\n",fc,v);
+        //error("ld [%d],tcc__r%d\n",fc,r);
+        pr("; deref constant ptr ld [%d],tcc__r%d\n", fc, r);
+        if(is_float(ft)) {
+          error("dereferencing constant float pointers unimplemented\n");
+        }
+        else {
+          switch(length) {
+          case 1:
+            pr("lda.w #0\nsep #$20\nlda.l %d\nrep #$20\n", fc);
+            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ ");
+            pr("sta.b tcc__r%d\n", r);
+            break;
+          case 2: pr("lda.l %d\nsta.b tcc__r%d\n", fc, r); break;
+          case 4: pr("lda.l %d\nsta.b tcc__r%d\nlda.l %d + 2\nsta.b tcc__r%dh\n", fc, r, fc, r); break;
+          default: error("ICE 1");
+          }
+        }
       }
       return;
     }
@@ -1280,7 +1296,7 @@ void gfunc_prolog(CType* func_type)
   addr=3;	// skip 24-bit return address
   loc = 0;
   if((func_vt.t & VT_BTYPE) == VT_STRUCT) {
-    fprintf(stderr,"struct!\n");
+    //fprintf(stderr,"struct!\n");
     func_vc = addr;
     addr += PTR_SIZE;
     n += PTR_SIZE;
