@@ -104,7 +104,7 @@ void snesc_init(void)
 {
   int i;
   __nmi_handler = snesc_vblank;	/* register vblank handler */
-  *((unsigned char*)0x4200) = 0x81; /* dammit, forgot what that does */
+  *((unsigned char*)0x4200) = 0x81; /* enable NMI, enable autojoy */
   snesc_timer_enabled = snesc_do_copy = snesc_controllers[0] = 0;
 
   /* snesc sprite init stuff */
