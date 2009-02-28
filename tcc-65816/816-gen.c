@@ -329,7 +329,7 @@ void load(int r, SValue* sv)
           pr("; fld%d [sp,%d],tcc__f%d\n", length, fc, r - TREG_F0);
           if(length != 4) error("ICE 2f");
           fc = adjust_stack(fc, args_size + 2);
-          pr("lda %d + __%s_locals + 1, s\nsta.b tcc__f%d\nlda %d + __%s_locals + 1, s\nsta.b tcc__f%dh\n", fc+args_size, current_fn, r - TREG_F0, fc+args_size+2, current_fn, r - TREG_F0);
+          pr("lda %d + __%s_locals + 1,s\nsta.b tcc__f%d\nlda %d + __%s_locals + 1,s\nsta.b tcc__f%dh\n", fc+args_size, current_fn, r - TREG_F0, fc+args_size+2, current_fn, r - TREG_F0);
           fc = restore_stack(fc);
         }
         else {
@@ -345,13 +345,13 @@ void load(int r, SValue* sv)
           fc = adjust_stack(fc, args_size + 2);
           switch(length) {
             case 1:
-              pr("lda.w #0\nsep #$20\nlda %d + __%s_locals + 1, s\nrep #$20\n", fc+args_size, current_fn);
+              pr("lda.w #0\nsep #$20\nlda %d + __%s_locals + 1,s\nrep #$20\n", fc+args_size, current_fn);
               if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ ");
               pr("sta.b tcc__r%d\n", r);
               break;
-            //case 2: pr("stz.b tcc__r%dh\nlda %d + __%s_locals + 1, s\nsta.b tcc__r%d\n", r, fc+args_size, current_fn, r); break;
-            case 2: pr("lda %d + __%s_locals + 1, s\nsta.b tcc__r%d\n", fc+args_size, current_fn, r); break;
-            case 4: pr("lda %d + __%s_locals + 1, s\nsta.b tcc__r%d\nlda %d + __%s_locals + 1, s\nsta.b tcc__r%dh\n", fc+args_size, current_fn, r, fc+args_size + 2, current_fn, r); break;
+            //case 2: pr("stz.b tcc__r%dh\nlda %d + __%s_locals + 1,s\nsta.b tcc__r%d\n", r, fc+args_size, current_fn, r); break;
+            case 2: pr("lda %d + __%s_locals + 1,s\nsta.b tcc__r%d\n", fc+args_size, current_fn, r); break;
+            case 4: pr("lda %d + __%s_locals + 1,s\nsta.b tcc__r%d\nlda %d + __%s_locals + 1,s\nsta.b tcc__r%dh\n", fc+args_size, current_fn, r, fc+args_size + 2, current_fn, r); break;
             default: error("ICE 2"); break;
           }
           fc = restore_stack(fc);
@@ -429,7 +429,7 @@ void load(int r, SValue* sv)
       pr("lda #%d\nbra +\n", t);
       gsym(fc);
       //pr("lda #%d\n+ stz tcc__r%dh\nsta tcc__r%d\n", t^1, r,r);
-      pr("lda #%d\n+ sta.b tcc__r%d\n", t^1, r);	// stz rXh seems to be unnecessary (we only look at the lower word)
+      pr("lda #%d\n+\nsta.b tcc__r%d\n", t^1, r);	// stz rXh seems to be unnecessary (we only look at the lower word)
       return;
     }
     else if(v < VT_CONST) {	// register value
@@ -1117,7 +1117,7 @@ void gen_opi(int op)
           default: error("unknown shift");
         }
       if(isconst && fc <= UNROLL_SHIFT_MAX) pr("sta.b tcc__r%d\n", r);
-      else pr("dey\nbne -\n+ sta.b tcc__r%d\n", r);
+      else pr("dey\nbne -\n+\nsta.b tcc__r%d\n", r);
       break;
     default:
       error("opi 0x%x (%c) unimplemented\n",op,op);
