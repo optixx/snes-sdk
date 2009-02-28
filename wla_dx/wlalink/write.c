@@ -181,7 +181,7 @@ int insert_sections(void) {
 #if 0
   for(i=0;i<sn;i++)
   {
-    printf("s %s\n",sa[i]->name);
+    printf("s %s id %d\n",sa[i]->name,sa[i]->file_id);
   }
 #endif
 
