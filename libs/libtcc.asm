@@ -28,20 +28,20 @@ tcc__mull:
       ldx #0
       ldy #0
 -     lda.b tcc__r9
-      ora tcc__r9h
+      ora.b tcc__r9h
       beq ++
-      lsr tcc__r9h
-      ror tcc__r9
+      lsr.b tcc__r9h
+      ror.b tcc__r9
       bcc +
       clc
       tya
-      adc tcc__r10
+      adc.b tcc__r10
       tay
       txa
-      adc tcc__r10h
+      adc.b tcc__r10h
       tax
-+     asl tcc__r10
-      rol tcc__r10h
++     asl.b tcc__r10
+      rol.b tcc__r10h
       bra -
 ++    rtl
 

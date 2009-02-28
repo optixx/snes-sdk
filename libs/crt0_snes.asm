@@ -26,6 +26,9 @@ tcc__f3h dsb 2
 move_insn dsb 4	; 3 bytes mvn + 1 byte rts
 move_backwards_insn dsb 4 ; 3 bytes mvp + 1 byte rts
 __nmi_handler dsb 4
+
+tcc__registers_irq dsb 0
+tcc__regs_irq dsb 48
 .ends
 
 
@@ -35,6 +38,9 @@ __nmi_handler dsb 4
 
 EmptyHandler:
        rti
+
+EmptyNMI:
+       rtl
 
 .ENDS
 
@@ -192,9 +198,11 @@ VBlank:
   pea $7e7e
   plb
   plb
-  lda.b __nmi_handler
+  lda.w #tcc__registers_irq
+  tad
+  lda.l __nmi_handler
   sta.b tcc__r10
-  lda.b __nmi_handler + 2
+  lda.l __nmi_handler + 2
   sta.b tcc__r10h
   jsl tcc__jsl_r10
   pla
@@ -225,6 +233,15 @@ tcc__start:
 
     rep #$30	; all registers 16-bit
 
+    ; direct page points to register set
+    lda.w #tcc__registers
+    tad
+
+    lda.w #EmptyNMI
+    sta.b __nmi_handler
+    lda.w #:EmptyNMI
+    sta.b __nmi_handler + 2
+
     ; copy .data section to RAM
     ldx #0
 -   lda.l __startsection.data,x
@@ -248,9 +265,6 @@ tcc__start:
     bne -
 +
 
-    ; direct page points to register set
-    lda.w #tcc__registers
-    tad
 
     ; used by memcpy
     lda #$0054 ; mvn + 1st byte
