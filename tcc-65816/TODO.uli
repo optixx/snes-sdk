@@ -14,8 +14,6 @@
 - optimize bitfield shifting (can do shift & and instead of shift & shift)
 - optimize test branches (right now, a lot of cascaded branches are
   generated instead of patching them to all go to the same place)
-- fix local static declarations (name collision; done for get_sym_str(), but
-  that's only half the solution; related test 990326-1.c)
 - fix long stack accesses (adjust_stack() doesn't work well because it
   doesn't know the locals size at runtime; macros seem to be entirely
   broken)
@@ -193,3 +191,5 @@
   write a list file
 - implement retargetable NMI handler DONE!
 - make SNESC internal data symbolic DONE!
+- fix local static declarations (name collision; done for get_sym_str(), but
+  that's only half the solution; related test 990326-1.c) DONE!
