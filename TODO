@@ -24,7 +24,6 @@
   remember why I put this in, it has been too long ago; testing suggests
   this is already the case; could depend on the qsort() implementation,
   though)
-- make binary default output format for 65816
 
 - calls thru function pointers DONE!
 - relocs for function pointer arrays DONE!
@@ -196,3 +195,4 @@
 - make SNESC internal data symbolic DONE!
 - fix local static declarations (name collision; done for get_sym_str(), but
   that's only half the solution; related test 990326-1.c) DONE!
+- make binary default output format for 65816 DONE!

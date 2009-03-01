@@ -596,17 +596,17 @@ static void relocate_section(TCCState *s1, Section *s)
 #elif defined(TCC_TARGET_816)
         case R_DATA_32:
             //fprintf(stderr,"___ relocating at 0x%lx to 0x%lx, sr %p, s %p, shndx %d name %s info 0x%x other 0x%x relocindex 0x%x ptr 0x%x\n",addr,val,sr,s,sym->st_shndx,symtab_section->link->data + sym->st_name, sym->st_info, sym->st_other,relocindices[addr],*(unsigned int*)ptr);
-            if(relocptrs[((unsigned int)ptr)&0xfffff]) error("relocptrs collision");
+            if(relocptrs[((unsigned long)ptr)&0xfffff]) error("relocptrs collision");
             /* if(ELF32_ST_BIND(sym->st_info) == STB_LOCAL) {
               relocptrs[((unsigned int)ptr)&0xfffff] = calloc(1,strlen(static_prefix) + strlen(symtab_section->link->data + sym->st_name) + 1);
               sprintf(relocptrs[((unsigned int)ptr)&0xfffff], "%s%s", static_prefix, symtab_section->link->data + sym->st_name);
             }
-            else */ relocptrs[((unsigned int)ptr)&0xfffff] = symtab_section->link->data + sym->st_name;
+            else */ relocptrs[((unsigned long)ptr)&0xfffff] = symtab_section->link->data + sym->st_name;
             /* no need to change the value at ptr, we only need the offset, and that's already there */
             break;
         default:
-            fprintf(stderr,"FIXME: handle reloc type 0x%x at 0x%lx [%.8x] to 0x%lx\n",
-                    type, addr, (unsigned int)ptr, val);
+            fprintf(stderr,"FIXME: handle reloc type 0x%x at 0x%lx [%.8lx] to 0x%lx\n",
+                    type, addr, (unsigned long)ptr, val);
             break;
 #else
 #error unsupported processor
@@ -1195,8 +1195,9 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
           int empty = 1;
           fprintf(f, ".ramsection \".bss\" bank $7e slot 2\n");
           //fprintf(f, "ramsection.bss dsb 0\n");
-          for(j = 0, esym = (Elf32_Sym*) symtab_section->data; j < symtab_section->sh_size / 4; esym++, j++) {
+          for(j = 0, esym = (Elf32_Sym*) symtab_section->data; j < symtab_section->sh_size / sizeof(Elf32_Sym*); esym++, j++) {
             //fprintf(stderr,"symbol st_shndx %d\n", esym->st_shndx);
+            //fprintf(stderr,"esym %p\n", esym);
             //if(esym->st_shndx < 3) fprintf(stderr,"symbol %s\n", symtab_section->link->data + esym->st_name);
               if(esym->st_shndx == SHN_COMMON
                  && strlen(symtab_section->link->data + esym->st_name)) /* omit nameless symbols (fixes 20041218-1.c) */
@@ -1259,7 +1260,7 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
               Elf32_Sym* esym;	/* ELF symbol */
               char* lastsym = NULL;	/* name of previous symbol (some symbols appear more than once; bug?) */
               int symbol_printed = 0; /* have we already printed a symbol in this run? */
-              for(ps = 0, esym = (Elf32_Sym*) symtab_section->data; ps < symtab_section->sh_size / 4; esym++, ps++) {
+              for(ps = 0, esym = (Elf32_Sym*) symtab_section->data; ps < symtab_section->sh_size / sizeof(Elf32_Sym*); esym++, ps++) {
                 //if(!find_elf_sym(symtab_section, get_tok_str(ps->v, NULL))) continue;
                 unsigned long pval;
                 char* symname = symtab_section->link->data + esym->st_name;
@@ -1322,10 +1323,10 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
                     bytecount ++;
                   }
                   else {		/* (ROM) .section, need to output data */
-                    if(relocptrs[((unsigned int)&s->data[j])&0xfffff]) {
+                    if(relocptrs[((unsigned long)&s->data[j])&0xfffff]) {
                       /* relocated -> print a symbolic pointer */
                       //fprintf(f,".dw ramsection%s + $%x", s->name, ptr);
-                      char* ptrname = relocptrs[((unsigned int)&s->data[j])&0xfffff];
+                      char* ptrname = relocptrs[((unsigned long)&s->data[j])&0xfffff];
                       fprintf(f,".dw %s + %d, :%s", ptrname, ptr, ptrname);
                       j+=3;	/* we have handled 3 more bytes than expected */
                       deebeed = 0;
@@ -1342,9 +1343,9 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
               }
               
               /* no symbol here, just print the data */
-              if(k == 1 && relocptrs[((unsigned int)&s->data[j])&0xfffff]) {
+              if(k == 1 && relocptrs[((unsigned long)&s->data[j])&0xfffff]) {
                 /* unlabeled data may have been relocated, too */
-                fprintf(f,"\n.dw %s + %d\n.dw :%s", relocptrs[((unsigned int)&s->data[j])&0xfffff], *(unsigned int*)(&s->data[j]), relocptrs[((unsigned int)&s->data[j])&0xfffff]);
+                fprintf(f,"\n.dw %s + %d\n.dw :%s", relocptrs[((unsigned long)&s->data[j])&0xfffff], *(unsigned int*)(&s->data[j]), relocptrs[((unsigned long)&s->data[j])&0xfffff]);
                 j+=3;
                 deebeed = 0;
                 continue;

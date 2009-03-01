@@ -10,7 +10,7 @@ all: $(SUBDIRS)
 
 .PHONY: dummy $(SUBDIRS)
 libs wla_dx snes9x wla_dx/wlalink: dummy
-	cd $@ && $(MAKE)
+	cd $@ && $(MAKE) PREFIX=$(PREFIX)
 tcc-65816: tcc-65816/config.h
 	@cd $@ && $(MAKE) 816-tcc
 

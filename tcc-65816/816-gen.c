@@ -823,7 +823,7 @@ int gtst(int inv, int t)
 void gen_opi(int op)
 {
   int r, fr, fc, ft, c, r5;
-  char* opcrem, *opcalc, *opcarry;
+  char* opcrem = 0, *opcalc = 0, *opcarry = 0;
   int optone;
   int docarry;
   int sign;
@@ -1237,15 +1237,14 @@ void gen_cvt_itof(int t)
 
 void gen_cvt_ftoi(int t)
 {
-  int r;
-  int float_r;
+  int r = 0;
   gv(RC_F0);
   if((t & VT_BTYPE) == VT_LLONG) {
     get_reg(RC_R0);
     get_reg(RC_R1);
   }
   else r = get_reg(RC_INT);
-  pr("; ftoi tcc__f%d, tcc__r%d(type 0x%x)\n", float_r, r, t);
+  pr("; ftoi tcc__f0, tcc__r%d(type 0x%x)\n", r, t);
   if(t & VT_UNSIGNED) pr("lda #0\nsta.b tcc__r9\n");
   else pr("lda #1\nsta.b tcc__r9\n");
   

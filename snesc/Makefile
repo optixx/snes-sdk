@@ -8,7 +8,6 @@ CC=$(BINDIR)/816-tcc
 EMU=bsnes
 
 LIBDIR=$(PREFIX)/lib
-LIBS = $(LIBDIR)/crt0_snes.obj $(LIBDIR)/libm.obj $(LIBDIR)/libtcc.obj $(LIBDIR)/libc.obj
 
 ASMOBJ = data.obj graph.obj str.obj
 COBJ = snesc.obj input.obj init.obj
@@ -17,10 +16,10 @@ all: snesc.smc
 	$(EMU) snesc.smc || xset r on
 
 snesc.smc: $(ASMOBJ) $(COBJ)
-	$(LD) -vS $(LIBS) $(ASMOBJ) $(COBJ) snesc.smc
+	$(LD) -dvSo $(ASMOBJ) $(COBJ) snesc.smc
 
 %.s: %.c
-	$(CC) -I. -Wl,--oformat,binary -o $@ -c $<
+	$(CC) -I. -o $@ -c $<
 %.obj: %.s
 	$(AS) -io $< $@
 %.obj: %.asm

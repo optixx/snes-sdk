@@ -1,10 +1,11 @@
 #!/bin/bash -x
 set -e
-for i in hw3 hw3a ; do ../../816-tcc -I. -Wl,--oformat,binary -o $i.asm -c $i.c ; done
+for i in hw3 hw3a ; do ../../816-tcc -I. -o $i.asm -c $i.c ; done
 for i in hw3 hw3a ; do python opt.py $i.asm >$i.opt.asm ; done
 #for i in hw3 hw3a ; do cp $i.asm $i.opt.asm ; done
 for i in hw3 hw3a ; do ../../../wla_dx/wla-65816 -io $i.opt.asm $i.obj ; done
-../../../wla_dx/wlalink/wlalink -vS test.lnk test.smc
+../../../wla_dx/wla-65816 -io asmfptest.asm asmfptest.obj
+../../../wla_dx/wlalink/wlalink -dvSn test.lnk test.smc
 gcc -m32 hw3.c hw3a.c
 ./a.out >output.gcc || true
 if ! ../../../snes9x/snes9x test.smc >output.snes

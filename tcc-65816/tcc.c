@@ -173,8 +173,8 @@ typedef struct SValue {
 /* symbol management */
 typedef struct Sym {
     int v;    /* symbol token */
-    int r;    /* associated register */
-    int c;    /* associated number */
+    long r;    /* associated register */
+    long c;    /* associated number */
     CType type;    /* associated type */
     struct Sym *next; /* next related symbol */
     struct Sym *prev; /* prev symbol in stack */
@@ -1205,6 +1205,7 @@ static void *section_ptr_add(Section *sec, unsigned long size)
 
     offset = sec->data_offset;
     offset1 = offset + size;
+    //fprintf(stderr,"section_ptr_add sec %s data %p size %ld offset %ld offset1 %ld allocd %ld\n", sec->name, sec->data, size,offset,offset1,sec->data_allocated);
     if (offset1 > sec->data_allocated)
         section_realloc(sec, offset1);
     sec->data_offset = offset1;
@@ -2505,7 +2506,7 @@ static inline void define_push(int v, int macro_type, int *str, Sym *first_arg)
 {
     Sym *s;
 
-    s = sym_push2(&define_stack, v, macro_type, (int)str);
+    s = sym_push2(&define_stack, v, macro_type, (long)str);
     s->next = first_arg;
     table_ident[v - TOK_IDENT]->sym_define = s;
 }
@@ -4165,7 +4166,7 @@ static int macro_subst_tok(TokenString *tok_str,
                     next_nomacro();
                 }
                 tok_str_add(&str, 0);
-                sym_push2(&args, sa->v & ~SYM_FIELD, sa->type.t, (int)str.str);
+                sym_push2(&args, sa->v & ~SYM_FIELD, sa->type.t, (long)str.str);
                 sa = sa->next;
                 if (tok == ')') {
                     /* special case for gcc var args: add an empty
@@ -6030,7 +6031,7 @@ static void gen_cast(CType *type)
                     break;
                 }
             } else {
-            do_itof:
+            //do_itof:
 #if !defined(TCC_TARGET_ARM)
                 gen_cvt_itof1(dbt);
 #else
@@ -8441,7 +8442,7 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym,
             }
             /* label already defined */
             if (s->r & LABEL_FORWARD) 
-                s->next = (void *)gjmp((long)s->next);
+                s->next = (void *)(long)gjmp((long)s->next);
             else
                 gjmp_addr((long)s->next);
             next();
@@ -8476,7 +8477,7 @@ static void block(int *bsym, int *csym, int *case_sym, int *def_sym,
                 gsym((long)s->next); /* without this, labels end up in the wrong place (too late) */
 #endif
             }
-            s->next = (void *)ind;
+            s->next = (void *)(long)ind;
             /* we accept this, but it is a mistake */
         block_after_label:
             if (tok == '}') {
@@ -9469,7 +9470,7 @@ static void decl(int l)
                     }
                     tok_str_add(&func_str, -1);
                     tok_str_add(&func_str, 0);
-                    sym->r = (int)func_str.str;
+                    sym->r = (long)func_str.str;
                 } else {
                     /* compute text section */
                     cur_text_section = ad.section;
@@ -10770,6 +10771,8 @@ int parse_args(TCCState *s, int argc, char **argv)
     const char *optarg, *p1, *r1;
     char *r;
 
+    s->output_format = TCC_OUTPUT_FORMAT_BINARY;
+    
     optind = 0;
     while (1) {
         if (optind >= argc) {
