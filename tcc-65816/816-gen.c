@@ -285,13 +285,13 @@ void load(int r, SValue* sv)
           if(fc > 65535) error("index too big");
           switch(length) {
           case 1:
-            pr("lda.w #0\nsep #$20\nldx #%d\nlda.l %s,x\nrep #$20\n", fc, sy);
-            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ ");
+            pr("lda.w #0\nsep #$20\nlda.l %s + %d\nrep #$20\n", sy, fc);
+            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+\n");
             pr("sta.b tcc__r%d\n", r);
             break;
           //case 2: pr("stz.b tcc__r%dh\nldx #%d\nlda.l %s,x\nsta.b tcc__r%d\n", r, fc, sy, r); break;
-          case 2: pr("ldx #%d\nlda.l %s,x\nsta.b tcc__r%d\n", fc, sy, r); break;
-          case 4: pr("ldx #%d\nlda.l %s,x\nsta.b tcc__r%d\nlda.l %s + 2,x\nsta.b tcc__r%dh\n", fc, sy, r, sy, r); break;
+          case 2: pr("lda.l %s + %d\nsta.b tcc__r%d\n", sy, fc, r); break;
+          case 4: pr("lda.l %s + %d\nsta.b tcc__r%d\nlda.l %s + %d + 2\nsta.b tcc__r%dh\n", sy, fc, r, sy, fc, r); break;
           default: error("ICE 1");
           }
         }
@@ -306,7 +306,7 @@ void load(int r, SValue* sv)
           switch(length) {
           case 1:
             pr("lda.w #0\nsep #$20\nlda.l %d\nrep #$20\n", fc);
-            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ ");
+            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+\n");
             pr("sta.b tcc__r%d\n", r);
             break;
           case 2: pr("lda.l %d\nsta.b tcc__r%d\n", fc, r); break;
@@ -346,7 +346,7 @@ void load(int r, SValue* sv)
           switch(length) {
             case 1:
               pr("lda.w #0\nsep #$20\nlda %d + __%s_locals + 1,s\nrep #$20\n", fc+args_size, current_fn);
-              if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ ");
+              if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+\n");
               pr("sta.b tcc__r%d\n", r);
               break;
             //case 2: pr("stz.b tcc__r%dh\nlda %d + __%s_locals + 1,s\nsta.b tcc__r%d\n", r, fc+args_size, current_fn, r); break;
@@ -363,7 +363,7 @@ void load(int r, SValue* sv)
               pr("lda.w #0\n");
               if(!fc) pr("sep #$20\nlda.b [tcc__r%d]\nrep #$20\n", base);
               else pr("ldy #%d\nsep #$20\nlda.b [tcc__r%d],y\nrep #$20\n", fc, base);
-              if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ ");
+              if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+\n");
               pr("sta.b tcc__r%d\n", r);
               break;
             //case 2: pr("stz.b tcc__r%dh\nldy #%d\nlda.b [tcc__r%d],y\nsta.b tcc__r%d\n", r, fc, base, r); break;
@@ -395,7 +395,7 @@ void load(int r, SValue* sv)
         switch(length) {
           case 1:
             pr("lda.w #%d\n", sv->c.ul & 0xff);
-            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+ "); // FIXME: wouldn't this be identical to "case 2:"?
+            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+\n"); // FIXME: wouldn't this be identical to "case 2:"?
             pr("sta.b tcc__r%d\n", r);
             break;
           //case 2: pr("stz.b tcc__r%dh\nlda.w #%d\nsta.b tcc__r%d\n", r, sv->c.ul & 0xffff, r); break;
@@ -873,7 +873,7 @@ void gen_opi(int op)
       }
       pr("lda.b tcc__r%d\nsta.b tcc__r10\n", r);
       pr("jsr.l tcc__mul\n");
-      pr("sta.b tcc__r%d", r);
+      pr("sta.b tcc__r%d\n", r);
       break;
 
     case TOK_UMULL:
@@ -1000,7 +1000,7 @@ void gen_opi(int op)
       pr("tay\n"); // save for long long comparisons
       if(op == TOK_EQ) pr("beq +\n");
       else pr("bne +\n");
-      pr("dex\n+ stx.b tcc__r%d\n", r5);			// long long code does some wild branching and fucks up
+      pr("dex\n+\nstx.b tcc__r%d\n", r5);			// long long code does some wild branching and fucks up
                                                         // if the results of the compares it generates do not
                                                         // end up in the same register; unlikely to be a performance
                                                         // impediment: TCC does not usually use this register anyway
@@ -1026,7 +1026,7 @@ void gen_opi(int op)
       pr("tay\n"); // may need that later for long long
       if(op == TOK_GT) pr("beq ++\n"); // greater than => equality not good, result 0
       else if(op == TOK_LE) pr("beq +++\n");	// less than or equal => equality good, result 1
-      pr("bvc +\neor #$8000\n+ ");
+      pr("bvc +\neor #$8000\n+\n");
       switch(op) {
       case TOK_GT: pr("bpl +++\n"); break;
       case TOK_LE: pr("bmi +++\n"); break;
@@ -1034,7 +1034,7 @@ void gen_opi(int op)
       case TOK_GE: pr("bpl +++\n"); break;
       default: error("don't know how to handle signed 0x%x\n", op);
       }
-      pr("++ dex\n+++ stx.b tcc__r%d\n", r5);	// see TOK_EQ/TOK_NE
+      pr("++\ndex\n+++\nstx.b tcc__r%d\n", r5);	// see TOK_EQ/TOK_NE
       vtop->r = r5;
       break;
     case TOK_UGT:
@@ -1058,7 +1058,7 @@ void gen_opi(int op)
       case TOK_UGE: pr("bcs ++\n"); break;
       default: error("don't know how to handle 0x%x\n", op);
       }
-      pr("+ dex\n++ stx.b tcc__r%d\n", r5);	// see TOK_EQ/TOK_NE
+      pr("+ dex\n++\nstx.b tcc__r%d\n", r5);	// see TOK_EQ/TOK_NE
       vtop->r = r5;
       break;
     case TOK_SAR:
@@ -1181,7 +1181,7 @@ void gen_opf(int op)
       pr("dec a\n");
       if(op == TOK_EQ) pr("beq +\n");
       else pr("bne +\n");
-      pr("dex\n+ stx.b tcc__r%d\n", ir);
+      pr("dex\n+\nstx.b tcc__r%d\n", ir);
       vtop->r = ir;
       return;
       break;
@@ -1205,7 +1205,7 @@ void gen_opf(int op)
       case TOK_GE: pr("+ bpl +++\n"); break;
       default: error("don't know how to handle signed 0x%x\n", op);
       }
-      pr("++ dex\n+++ stx.b tcc__r%d\n", ir);
+      pr("++\ndex\n+++\nstx.b tcc__r%d\n", ir);
       vtop->r = ir;
       return;
       break;

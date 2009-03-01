@@ -1,6 +1,6 @@
 .include "hdr.asm"
 
-.section ".asmfptest" superfree
+.section ".libm" superfree
 .accu 16
 .index 16
 .16bit

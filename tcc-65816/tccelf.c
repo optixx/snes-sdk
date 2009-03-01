@@ -1182,7 +1182,8 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
                 /* while we're here, look for the next jump target after this one */
                 if(jump[k][1] > j && jump[k][1] < next_jump_pos) next_jump_pos = jump[k][1];
                 /* write the jump target label(s) for this position */
-                if(jump[k][1] == j) fprintf(f, LOCAL_LABEL ": ; at %d\n", k, j);
+                //if(jump[k][1] == j) fprintf(f, LOCAL_LABEL ": ; at %d\n", k, j);
+                if(jump[k][1] == j) fprintf(f, LOCAL_LABEL ":\n", k);
               }
             }
             fputc(s->data[j], f);
