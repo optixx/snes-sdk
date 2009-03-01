@@ -26,7 +26,7 @@ extern int memory_file_id, memory_file_id_source, memory_line_number, output_mod
 extern int program_start, program_end, cpu_65816, snes_mode, smc_status;
 extern int snes_sramsize;
 
-
+#if 0
 static int _sections_sort(const void *a, const void *b) {
 
   if ((*((struct section **)a))->size < (*((struct section **)b))->size)
@@ -37,6 +37,7 @@ static int _sections_sort(const void *a, const void *b) {
     return 1;
   return -1;
 }
+#endif
 
 static int _sections_sortalpha(const void *a, const void *b) {
 
@@ -111,7 +112,7 @@ void lookforsections(struct section** sa, int sn, int p, int* lookforsize, int* 
     int pp = p+1;
     if(strncmp(s->name, ".text", 5) == 0) return;
     while(pp < sn && !strcmp(s->name, sa[pp]->name) && s->status == sa[pp]->status) {
-      fprintf(stderr,"same section %s (%d and %d); size %d\n", s->name, p, pp, sa[pp]->size);
+      //fprintf(stderr,"same section %s (%d and %d); size %d\n", s->name, p, pp, sa[pp]->size);
       *lookforsize += sa[pp]->size;
       pp++; (*totalsections)++;
     }

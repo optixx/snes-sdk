@@ -16,7 +16,7 @@ extern struct label *labels_first, *labels_last;
 extern unsigned char *file_header, *file_footer;
 extern int file_header_size, file_footer_size;
 char file_name_error[] = "???";
-
+extern int object_file_parameters, no_std_libraries;
 
 
 int load_files(char *argv[], int argc, int have_flags) {
@@ -26,7 +26,21 @@ int load_files(char *argv[], int argc, int have_flags) {
   char tmp[1024], ou[1024];
   FILE *fop;
 
-  if (!((have_flags && argc == 4) || (!have_flags && argc == 3))) {
+  if (no_std_libraries == OFF) {
+    char* stdlibs[] = {
+#define LIBDIR PREFIX "/lib"
+      LIBDIR "/crt0_snes.obj",
+      LIBDIR "/libm.obj",
+      LIBDIR "/libtcc.obj",
+      LIBDIR "/libc.obj",
+      NULL
+    };
+    char** sl;
+    for (sl = stdlibs; *sl; sl++) {
+      if (load_file(*sl, STATE_OBJECT, 0, 0, 0, OFF) == FAILED) return FAILED;
+    }
+  }
+  if (object_file_parameters == ON) {
     for (i = (have_flags ? 2 : 1); i < argc - 1 ; i++) {
       if (load_file(argv[i], STATE_OBJECT, 0, 0, 0, OFF) == FAILED) return FAILED;
     }
