@@ -1,7 +1,7 @@
 #!/bin/bash -x
 set -e
 for i in hw3 hw3a ; do ../../816-tcc -I. -o $i.asm -c $i.c ; done
-for i in hw3 hw3a ; do python opt.py $i.asm >$i.opt.asm ; done
+for i in hw3 hw3a ; do python ../../816-opt.py $i.asm >$i.opt.asm ; done
 #for i in hw3 hw3a ; do cp $i.asm $i.opt.asm ; done
 for i in hw3 hw3a ; do ../../../wla_dx/wla-65816 -io $i.opt.asm $i.obj ; done
 ../../../wla_dx/wla-65816 -io asmfptest.asm asmfptest.obj

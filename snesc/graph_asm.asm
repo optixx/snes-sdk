@@ -116,36 +116,6 @@ setpalette:
     bankout
     rtl
 
-;void enablescreen() {
-enablescreen:
-    bankin
-    SEP #$20;
-    LDA #$09;
-    STA $2105;	// bg mode 1
-    LDA #$04;
-    STA $2109;	// location of bg3 map
-    LDA #$01;
-    STA $210B;	// location of bg1 & bg2 tiles
-    LDA #$02;
-    STA $210C;	// location of bg3 & bg4 tiles
-    LDA #$15;
-    STA $212C; 	// enable BG1, BG3, and OBJ to display
-    LDA #$0F;	// turn on the screen, full brightness 
-    STA $2100;
-    rep #$20
-    bankout
-    rtl
-
-;void screenmode(unsigned int m) {
-screenmode:
-    bankin
-    SEP #$20;
-    LDA 5,s ;m
-    STA $2105;
-    rep #$20
-    bankout
-    rtl
-
 ;void setsprite(unsigned int s, unsigned char x, unsigned char y, unsigned char t, unsigned char p) {
 setsprite:
     bankin
@@ -171,43 +141,6 @@ setsprite:
     ;TSB $0229	; signal NMI to copy sprite table
     bankout
     rtl
-
-;void waitforvsync() {
-waitforvsync:
-  bankin
-    LDA #$0001;
-    ora.l snesc_timer_enabled
-    sta.l snesc_timer_enabled
-    ;TSB $0200;	// turn timer on
-    dec a
-    STA.L snesc_timers;	// reset timer
-
--   LDA.L snesc_timers;	// wait
-    BEQ -
-
-  bankout
-  rtl
-
-;void delay(unsigned int d) {
-delay:
-  bankin
-    LDA #$0001;
-    ora.l snesc_timer_enabled
-    sta.l snesc_timer_enabled
-    ;TSB $0200;	// turn timer on
-    dec a
-    STA.L snesc_timers;	// reset timer
-    
-    lda 5,s ;d
-    tax
--   LDA.L snesc_timers;	// wait
-    BEQ -
-    lda.w #0
-    STA.L snesc_timers;	// reset timer
-    DEX
-    BNE -
-  bankout
-  rtl
 
 ;void resettimer() {
 resettimer:

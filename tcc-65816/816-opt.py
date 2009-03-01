@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import sys
 import re
 text_raw = open(sys.argv[1],'r').readlines()

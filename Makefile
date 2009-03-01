@@ -38,6 +38,7 @@ install:
 	cp -p libs/hdr.asm $(DESTDIR)$(PREFIX)/include/
 	cp -p tcc-65816/include/* $(DESTDIR)$(PREFIX)/include/
 	cp -p tcc-65816/816-tcc $(DESTDIR)$(PREFIX)/bin/
+	install -m 755 tcc-65816/816-opt.py $(DESTDIR)$(PREFIX)/bin/816-opt
 	cp -p wla_dx/wla-65816 $(DESTDIR)$(PREFIX)/bin/
 	cp -p wla_dx/wlalink/wlalink $(DESTDIR)$(PREFIX)/bin/
 ifeq ($(SNES9X),1)

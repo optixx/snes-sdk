@@ -28,14 +28,6 @@ unsigned char blocks[0x64], map[0x64] =
  7,7,7,7,8,8,7,7,7,7};
 
 int main() {
-  // turn the SNES bg green
-  volatile unsigned char* vb = (unsigned char*)0x2100;
-  volatile unsigned char* col = (unsigned char*)0x2122;
-  *vb = 0x80;
-  *col = 0xe0;
-  *col = 0;
-  *vb = 0xf;
-
   snesc_init();
   
   char st[17]="PLAYER 1\n\n READY", st2[10]="GAME OVER", st3[6]="PAUSE", st4[9]="        ";
