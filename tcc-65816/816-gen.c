@@ -844,7 +844,7 @@ void gen_opi(int op)
     vtop--;
     r = gv(RC_INT);
     isconst = 1;
-    if(fc < -32768 || fc > 65535) {
+    if(length <= 2 && (fc < -32768 || fc > 65535)) {
       warning("large integer implicitly truncated");
       fc = (short)fc;
     }
@@ -969,9 +969,15 @@ void gen_opi(int op)
       //if(vtop[0].type.t == 0x24) asm("int $3");
       if(isconst) {
         pr("; length xxy %d vtop->type 0x%x\n", type_size(&vtop->type, &align),vtop->type.t);
+        if (length == 4) {
+          /* probably pointer arithmetic... */
+          pr("; assuming pointer arith\n");
+          if ((fc >> 16) == 0) pr("stz.b tcc__r%dh\n", r);
+          else pr("lda.w #%d\nsta.b tcc__r%dh\n", fc >> 16, r);
+        }
         if(fc == 1 && optone) pr("%s.b tcc__r%d\n", opcrem, r);
         else if(fc == 2 && optone) pr("%s.b tcc__r%d\n%s.b tcc__r%d\n", opcrem, r, opcrem, r);
-        else pr("%s\nlda.b tcc__r%d\n%s.w #%d\nsta.b tcc__r%d\n", docarry?opcarry:"; nop", r, opcalc, fc, r);
+        else pr("%s\nlda.b tcc__r%d\n%s.w #%d\nsta.b tcc__r%d\n", docarry?opcarry:"; nop", r, opcalc, fc & 0xffff, r);
       }
       else {
         pr("; length xxy %d vtop->type 0x%x\n", type_size(&vtop->type, &align),vtop->type.t);

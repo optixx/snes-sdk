@@ -76,13 +76,7 @@ void snesc_vblank(void)
     }
   }
 
-#if 0
-  /* does not work for unknown reasons; asm code looks OK; could be a timing issue */
   while(*((unsigned char*)0x4212) & 1) {}
-#else
-  unsigned char* autojoy = (unsigned char*)0x4212;
-  while(*autojoy & 1) {}
-#endif
   
   /* update input buffers */
   unsigned int pad;
