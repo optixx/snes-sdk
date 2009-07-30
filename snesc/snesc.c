@@ -60,7 +60,7 @@ int main() {
   }
 
   writebcd(lives, blockmap, 0x26C, 0x426);
-  writestring(st, blockmap, 0x490, 0x3F6);
+  writestring(st, blockmap, 0x248, 0x3F6);
 
   setmap(0, (unsigned char*)blockmap);
   setmap(1, (unsigned char*)backmap);
@@ -84,20 +84,20 @@ int main() {
   delay(50); 
   while (getjoystatus(0) == 0) continue;
 
-  writestring(st4, blockmap, 0x490, 0x3F6);
-  writestring(st4, blockmap, 0x512, 0x3F6);
+  writestring(st4, blockmap, 0x248, 0x3F6);
+  writestring(st4, blockmap, 0x289, 0x3F6);
   setmap(0, (unsigned char*)blockmap);
 
 label1:
   resettimer();
   
   if ((getjoystatus(0) & START_BUTTON) != 0) {
-    writestring(st3, blockmap, 0x4D2, 0x3F6);
+    writestring(st3, blockmap, 0x269, 0x3F6);
     setmap(0, (unsigned char*)blockmap);  
     while (getjoystatus(0) != 0) { clearjoy(0); delay(5); } 
     while ((getjoystatus(0) & START_BUTTON) == 0) continue;
     while (getjoystatus(0) != 0) { clearjoy(0); delay(5); } 
-    writestring(st4, blockmap, 0x4D2, 0x3F6);
+    writestring(st4, blockmap, 0x269, 0x3F6);
     setmap(0, (unsigned char*)blockmap);
   }
 
@@ -130,13 +130,13 @@ label1:
     } else if (y > 224) {
         // death
         if (lives == 0) {
-          writestring(st2, blockmap, 0x4CE, 0x3F6);
+          writestring(st2, blockmap, 0x267, 0x3F6);
           setmap(0, (unsigned char*)blockmap);
           lose: goto lose;
         }
         lives--; x=94; y=109; px=80;
         writebcd(lives, blockmap, 0x26C, 0x426);
-        writestring(st, blockmap, 0x490, 0x3F6);
+        writestring(st, blockmap, 0x248, 0x3F6);
         setmap(0, (unsigned char*)blockmap);
 
         // main sprites
@@ -155,8 +155,8 @@ label1:
         delay(50);
         while (getjoystatus(0) == 0) continue;
 
-        writestring(st4, blockmap, 0x490, 0x3F6);
-        writestring(st4, blockmap, 0x512, 0x3F6);
+        writestring(st4, blockmap, 0x248, 0x3F6);
+        writestring(st4, blockmap, 0x289, 0x3F6);
         setmap(0, (unsigned char*)blockmap);
     }
   } 
@@ -187,7 +187,7 @@ label1:
           // new level
           level++; addbcd(&level2, 1); x=94; y=109; px=80;
           writebcd(level2, blockmap, 0x5AC, 0x426);
-          writestring(st, blockmap, 0x490, 0x3F6);
+          writestring(st, blockmap, 0x248, 0x3F6);
           memcpy(backmap, bg2map+0x800*(level&3), 0x800);
           memcpy(blocks, map, 0x64);
           if (color<6) { color++; } else color=0;
@@ -226,8 +226,8 @@ label1:
           delay(50);
           while (getjoystatus(0) == 0) continue;
 
-          writestring(st4, blockmap, 0x490, 0x3F6);
-          writestring(st4, blockmap, 0x512, 0x3F6);
+          writestring(st4, blockmap, 0x248, 0x3F6);
+          writestring(st4, blockmap, 0x289, 0x3F6);
           setmap(0, (unsigned char*)blockmap);
         }
       }

@@ -112,45 +112,4 @@ writebcd:
   bankout
   rtl
 
-;void writestring(unsigned char *st, unsigned int *map, unsigned int p, unsigned int offset) {
-writestring:
-  bankin
-  ;unsigned int sp;
-    lda 5,s		; st lo
-    sta.b tcc__r10
-    lda 7,s		; st hi
-    sta.b tcc__r10h
-    lda 9,s		; map lo
-    sta.b tcc__r9
-    lda 11,s		; map hi
-    sta.b tcc__r9h
-    LDY #$0000;
-    LDA 13,s ;p			// position
-    sta.b tcc__r1
-    STA.b tcc__r0 ;sp			// start pos
--     LDA.b [tcc__r10],y ;[st],Y
-      AND #$00FF;
-      BEQ ++
-      CMP #$000A;
-      BNE +
-        LDA.b tcc__r0 ;sp		// newline
-        CLC
-        ADC #$0040
-        STA.b tcc__r1 ;p
-        STA.b tcc__r0 ;sp
-        INY
-        BRA -
-+     TYX
-      CLC
-      ADC 15,s ;offset
-      LDY.b tcc__r1 ;p
-      STA.b [tcc__r9],y ;[map],Y;
-      INC.b tcc__r1; p
-      INC.b tcc__r1; p
-      TXY
-      INY
-      BRA -
-++ bankout
-  rtl
-
 .ends
