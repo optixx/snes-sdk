@@ -51,7 +51,12 @@ static int _sections_sortalpha(const void *a, const void *b) {
   if(aa->size < bb->size) return 1;
   return -1;
 #else
-  return -strcmp(aa->name, bb->name);
+  int s = -strcmp(aa->name, bb->name);
+  /* identical names -> sort by file id, lowest first */
+  if (!s)
+    return (aa->file_id - bb->file_id);
+  else
+    return s;
 #endif
 }
 
