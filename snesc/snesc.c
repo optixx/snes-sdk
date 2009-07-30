@@ -59,7 +59,7 @@ int main() {
     }
   }
 
-  writebcd(lives, blockmap, 0x26C, 0x426);
+  writebcd(lives, blockmap, 0x136, 0x426);
   writestring(st, blockmap, 0x248, 0x3F6);
 
   setmap(0, (unsigned char*)blockmap);
@@ -135,7 +135,7 @@ label1:
           lose: goto lose;
         }
         lives--; x=94; y=109; px=80;
-        writebcd(lives, blockmap, 0x26C, 0x426);
+        writebcd(lives, blockmap, 0x136, 0x426);
         writestring(st, blockmap, 0x248, 0x3F6);
         setmap(0, (unsigned char*)blockmap);
 
@@ -176,17 +176,17 @@ label1:
         blockmap[0x43+b] = 0;
         backmap[0x63+b] -= 0x400;
         backmap[0x64+b] -= 0x400;
-        writebcd(score, blockmap, 0x1EA, 0x426);
+        writebcd(score, blockmap, 0xF5, 0x426);
         if (score > hiscore) {
           hiscore = score;
-          writebcd(score, blockmap, 0x12A, 0x426);
+          writebcd(score, blockmap, 0x95, 0x426);
         }
         setmap(0, (unsigned char*)blockmap);
         setmap(1, (unsigned char*)backmap);
         if (blockcount == 0) {
           // new level
           level++; addbcd(&level2, 1); x=94; y=109; px=80;
-          writebcd(level2, blockmap, 0x5AC, 0x426);
+          writebcd(level2, blockmap, 0x2D6, 0x426);
           writestring(st, blockmap, 0x248, 0x3F6);
           memcpy(backmap, bg2map+0x800*(level&3), 0x800);
           memcpy(blocks, map, 0x64);
