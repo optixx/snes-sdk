@@ -248,8 +248,7 @@ const char *patch_dir=base_dir;
 const char *rom_dir="." SLASH_STR "roms";
 const char *inc_format="%03d";
 
-//FIXME: I see no reason not to configureenable this for all Unixen
-#if defined(DEBUGGER) && (defined(__linux) || defined(__sun))
+#if defined(DEBUGGER)
 static void sigbrkhandler(int)
 {
     CPU.Flags |= DEBUG_MODE_FLAG;
