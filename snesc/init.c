@@ -7,18 +7,18 @@ unsigned char snesc_do_copy; /* bit 7: do sprite copy, bit 6: do palette copy
 unsigned char snesc_timer_enabled; /* each bit one timer */
 unsigned int snesc_timers[16];
 
-unsigned int snesc_oam_table1[256];	/* OAM low table */
+struct oam_table1 snesc_oam_table1[128];	/* OAM low table */
 unsigned int snesc_oam_table2[16];	/* OAM high table */
 
 unsigned char snesc_palette[512];	/* palette */
 
 unsigned int snesc_controllers[4];	/* data from 4 controllers */
 
-unsigned char snesc_dma_transfers[64*8]; /* DMA transfers
-                                            0 src address (24 bit)
-                                            3 dest address (16 bit)
-                                            5 size (16 bit)
-                                            7 type (8 bit, 0 == VRAM, 1 == OAM, 2 == CGRAM, >2 == ???) */
+struct dma_transfer snesc_dma_transfers[64]; /* DMA transfers
+                                            0 (src_addr, src_bank) src address (24 bit)
+                                            3 (dest) dest address (16 bit)
+                                            5 (size) size (16 bit)
+                                            7 (type) type (8 bit, 0 == VRAM, 1 == OAM, 2 == CGRAM, >2 == ???) */
 
 void do_dma(unsigned char do_flags)
 {
@@ -52,25 +52,25 @@ void snesc_vblank(void)
     if (do_flags) {
       int x = 0;
       while (do_flags) {
-        switch(snesc_dma_transfers[7+x]) {	/* type of transfer */
+        switch(snesc_dma_transfers[x].src.c.type) {	/* type of transfer */
         case 0:	/* VRAM */
           *((unsigned short*)0x4300) = 0x1801;	/* 2 regs write once, Bus B addr $2118 (VRAM data write) */
-          *((unsigned short*)0x2116) = *(unsigned short*)(snesc_dma_transfers + 3+x);	/* VRAM address */
+          *((unsigned short*)0x2116) = snesc_dma_transfers[x].dest;	/* VRAM address */
           break;
         case 1:	/* OAM */
           *((unsigned short*)0x4300) = 0x400;	/* DMA OAM write */
-          *((unsigned short*)0x2102) = *(unsigned short*)(snesc_dma_transfers + 3+x);	/* OAM address */
+          *((unsigned short*)0x2102) = snesc_dma_transfers[x].dest;	/* OAM address */
           break;
         case 2:	/* CGRAM */
           *((unsigned short*)0x4300) = 0x2200;	/* CGRAM write */
-          *((unsigned char*)0x2121) = snesc_dma_transfers[3+x];	/* CGRAM address */
+          *((unsigned char*)0x2121) = snesc_dma_transfers[x].dest;	/* CGRAM address (trunc'd to 8 bits) */
           break;
         }
-        *((unsigned short*)0x4302) = *(unsigned short*)(snesc_dma_transfers + x);	/* DMA source address (16-bit) */
-        *((unsigned short*)0x4305) = *(unsigned short*)(snesc_dma_transfers + 5 + x);	/* DMA size */
-        *((unsigned char*)0x4304) = snesc_dma_transfers[2+x];	/* DMA source address (bank) */
+        *((unsigned short*)0x4302) = snesc_dma_transfers[x].src.c.addr;	/* DMA source address (16-bit) */
+        *((unsigned short*)0x4305) = snesc_dma_transfers[x].size;	/* DMA size */
+        *((unsigned char*)0x4304) = snesc_dma_transfers[x].src.c.bank;	/* DMA source address (bank) */
         *((unsigned char*)0x420b) = 1;	/* enable DMA 0 */
-        x += 8;
+        x++;
         do_flags--;
       }
     }
@@ -102,9 +102,11 @@ void snesc_init(void)
   snesc_timer_enabled = snesc_do_copy = snesc_controllers[0] = 0;
 
   /* snesc sprite init stuff */
-  for(i = 0; i < 256; i+=2) {
-    snesc_oam_table1[i] = 0xe800;
-    snesc_oam_table1[i+1] = 0;
+  for(i = 0; i < 128; i++) {
+    snesc_oam_table1[i].x = 0;
+    snesc_oam_table1[i].y = 0xe8;
+    snesc_oam_table1[i].t = 0;
+    snesc_oam_table1[i].p = 0;
   }
   for(i = 0; i < 32; i+=2) {
     snesc_oam_table2[i] = 0;

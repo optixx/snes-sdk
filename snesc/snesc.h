@@ -39,7 +39,29 @@ extern unsigned char snesc_timer_enabled;
 extern unsigned int snesc_timers[16];
 extern unsigned int snesc_controllers[4];
 extern unsigned char snesc_do_copy;
-extern unsigned int snesc_oam_table1[256];
+
+struct oam_table1 {
+  unsigned char x;
+  unsigned char y;
+  unsigned char t;
+  unsigned char p;  
+};
+
+extern struct oam_table1 snesc_oam_table1[128];
 extern unsigned int snesc_oam_table2[32];
 extern unsigned char snesc_palette[512];
-extern unsigned char snesc_dma_transfers[64*8];
+
+struct dma_transfer {
+  union {
+    struct {
+      unsigned short addr; /* 0 + 1 */
+      unsigned char bank; /* 2 */
+      unsigned char type;
+    } c;
+    unsigned char *ptr;
+  } src;
+  unsigned short dest; /* 3 + 4 */
+  unsigned short size; /* 5 + 6 */
+};
+
+extern struct dma_transfer snesc_dma_transfers[64];
