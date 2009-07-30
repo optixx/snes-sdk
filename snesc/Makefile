@@ -11,7 +11,7 @@ EMU=bsnes
 
 LIBDIR=$(PREFIX)/lib
 
-ASMOBJ = data.obj str_asm.obj
+ASMOBJ = data.obj
 COBJ = snesc.obj input.obj init.obj graph.obj str.obj
 
 all: snesc.smc

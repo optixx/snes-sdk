@@ -34,7 +34,8 @@ int main() {
   unsigned int i, j, a, b=0, c, obx, oby, bx=5, by=11, py=0, x=94, y=109;
   signed int dx=2, dy=1, px=80, xdir[4]={-2,-1,1,2}, ydir[4]={-1,-2,-2,-1};
   unsigned int blockcount=0;
-  long long score=0x00000000, hiscore=0x00005000, level2=0x00000001;
+  unsigned long long score=0, hiscore=50000;
+  unsigned int level2=1;
   unsigned int color=0, level=0, lives=4;
 
   settiles(0, tiles1, 0xF00);
@@ -59,7 +60,7 @@ int main() {
     }
   }
 
-  writebcd(lives, blockmap, 0x136, 0x426);
+  writenum(lives, 8, blockmap, 0x136, 0x426);
   writestring(st, blockmap, 0x248, 0x3F6);
 
   setmap(0, (unsigned char*)blockmap);
@@ -135,7 +136,7 @@ label1:
           lose: goto lose;
         }
         lives--; x=94; y=109; px=80;
-        writebcd(lives, blockmap, 0x136, 0x426);
+        writenum(lives, 8, blockmap, 0x136, 0x426);
         writestring(st, blockmap, 0x248, 0x3F6);
         setmap(0, (unsigned char*)blockmap);
 
@@ -168,7 +169,7 @@ label1:
       if (blocks[b] != 8) {
         blockcount--; 
         for (i=0;i<=level;i++)
-          addbcd(&score,blocks[b]+1);
+          score += blocks[b]+1;
         if (oby != by) dy = -dy;
         if (obx != bx) dx = -dx;
         blocks[b] = 8; b = (by<<5)+(bx<<1);
@@ -176,17 +177,17 @@ label1:
         blockmap[0x43+b] = 0;
         backmap[0x63+b] -= 0x400;
         backmap[0x64+b] -= 0x400;
-        writebcd(score, blockmap, 0xF5, 0x426);
+        writenum(score, 8, blockmap, 0xF5, 0x426);
         if (score > hiscore) {
           hiscore = score;
-          writebcd(score, blockmap, 0x95, 0x426);
+          writenum(score, 8, blockmap, 0x95, 0x426);
         }
         setmap(0, (unsigned char*)blockmap);
         setmap(1, (unsigned char*)backmap);
         if (blockcount == 0) {
           // new level
-          level++; addbcd(&level2, 1); x=94; y=109; px=80;
-          writebcd(level2, blockmap, 0x2D6, 0x426);
+          level++; level2++; x=94; y=109; px=80;
+          writenum(level2, 8, blockmap, 0x2D6, 0x426);
           writestring(st, blockmap, 0x248, 0x3F6);
           memcpy(backmap, bg2map+0x800*(level&3), 0x800);
           memcpy(blocks, map, 0x64);

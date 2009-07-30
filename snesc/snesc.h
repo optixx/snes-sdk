@@ -31,8 +31,7 @@ unsigned int getjoystatus(unsigned int j);
 void clearjoy(unsigned int j);
 
 /* string */
-void addbcd(long long *bcd, unsigned int n);
-void writebcd(long long bcd, unsigned int *map, unsigned int p, unsigned int offset);
+void writenum(unsigned long long num, unsigned char len, unsigned int *map, unsigned int p, unsigned int offset);
 void writestring(unsigned char *st, unsigned int *map, unsigned int p, unsigned int offset);
 
 extern unsigned char snesc_timer_enabled;
