@@ -8,6 +8,13 @@ do
 		echo NOCOMPILE
 		continue
 	fi
+	if test "$OPTIMIZE" = "1" ; then
+	        mv suite.asm suite.asm.pre
+	        if ! python ../816-opt.py suite.asm.pre >suite.asm ; then
+	        	echo NOOPT
+	        	continue
+	        fi
+	fi
         if ! ../../wla_dx/wla-65816 -io ./suite.asm ./suite.obj ; then
         	echo NOASM
         	mv suite.asm failtraces/${i#*/}.asm

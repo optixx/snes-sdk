@@ -86,6 +86,17 @@ while opted:
         i += 3
         opted += 1
         continue
+      if text[i+1] == 'inc.b tcc__' + r.groups()[0]:
+        if text[i+2] == 'inc.b tcc__' + r.groups()[0] and text[i+3] == 'lda.b tcc__' + r.groups()[0]:
+          text_opt += ['ina','ina','sta.b tcc__' + r.groups()[0]]
+          i += 4
+          opted += 1
+          continue
+        elif text[i+2] == 'lda.b tcc__' + r.groups()[0]:
+          text_opt += ['ina','sta.b tcc__' + r.groups()[0]]
+          i += 3
+          opted += 1
+          continue
         
       r1 = re.match('lda.b tcc__([rf][0-9]*)',text[i+1])
       if r1:
@@ -180,7 +191,24 @@ while opted:
         i += 2
         opted += 1
         continue
+    elif text[i].startswith('lda.w #'):
+      if text[i+1] == 'sep #$20' and text[i+2].startswith('sta ') and text[i+3] == 'rep #$20' and text[i+4].startswith('lda'):
+        text_opt += ['sep #$20', text[i].replace('lda.w', 'lda.b'), text[i+2], text[i+3]]
+        i += 4
+        opted += 1
+        continue
     
+    if text[i] == 'rep #$20' and text[i+1] == 'sep #$20':
+      i += 2
+      opted += 1
+      continue
+    
+    if text[i].startswith('lda.b') and not is_control(text[i+1]) and not 'a' in text[i+1] and text[i+2].startswith('lda.b'):
+      text_opt += [text[i+1],text[i+2]]
+      i += 3
+      opted += 1
+      continue
+      
     r = re.match('adc #(.*)$',text[i])
     if r:
       r1 = re.match('sta.b (tcc__[fr][0-9]*)$', text[i+1])
