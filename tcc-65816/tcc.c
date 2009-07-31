@@ -491,6 +491,8 @@ struct TCCState {
     /* pack stack */
     int pack_stack[PACK_STACK_SIZE];
     int *pack_stack_ptr;
+    
+    int optimize;
 };
 
 /* The current value can be: */
@@ -10672,6 +10674,9 @@ int parse_args(TCCState *s, int argc, char **argv)
                     }
                 }
                 break;
+            case TCC_OPTION_O:
+                s->optimize = 1;
+                break;
             default:
                 if (s->warn_unsupported) {
                 unsupported_option:
@@ -10808,7 +10813,22 @@ int main(int argc, char **argv)
     }
 
     {
-        tcc_output_file(s, outfile);
+        if (s->optimize) {
+            char *outfile_pre = tcc_malloc(strlen(outfile) + 4 + 1);
+            sprintf(outfile_pre, "%s.pre", outfile);
+            tcc_output_file(s, outfile_pre);
+            char *cmd = tcc_malloc(strlen(outfile_pre) + strlen(outfile) + 100);
+            sprintf(cmd, CONFIG_TCCDIR "/bin/816-opt %s >%s", outfile_pre, outfile);
+            if (system(cmd)) {
+                error("optimizer failed");
+            }
+            unlink(outfile_pre);
+            tcc_free(outfile_pre);
+            tcc_free(cmd);
+        }
+        else {
+            tcc_output_file(s, outfile);
+        }
         ret = 0;
     }
  the_end:
