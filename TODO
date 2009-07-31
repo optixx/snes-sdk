@@ -19,11 +19,6 @@
   broken)
 - check if the bool casting workaround in 816-gen.c is still necessary and
   remove it if not
-- translate SNESC library and kernel to C
-- make sure section sorting is done in a stable way (use file_id) (don't
-  remember why I put this in, it has been too long ago; testing suggests
-  this is already the case; could depend on the qsort() implementation,
-  though)
 
 - calls thru function pointers DONE!
 - relocs for function pointer arrays DONE!
@@ -196,3 +191,8 @@
 - fix local static declarations (name collision; done for get_sym_str(), but
   that's only half the solution; related test 990326-1.c) DONE!
 - make binary default output format for 65816 DONE!
+- translate SNESC library and kernel to C DONE!
+- make sure section sorting is done in a stable way (use file_id) (don't
+  remember why I put this in, it has been too long ago; testing suggests
+  this is already the case; could depend on the qsort() implementation,
+  though) DONE!
