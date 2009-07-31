@@ -394,8 +394,12 @@ void load(int r, SValue* sv)
         }
         switch(length) {
           case 1:
-            pr("lda.w #%d\n", sv->c.ul & 0xff);
-            if(!(ft & VT_UNSIGNED)) pr("xba\nxba\nbpl +\nora.w #$ff00\n+\n"); // FIXME: wouldn't this be identical to "case 2:"?
+            if (ft & VT_UNSIGNED) {
+              pr("lda.w #%d\n", sv->c.ul & 0xff);
+            }
+            else {
+              pr("lda.w #%d\n", ((short)((sv->c.ul & 0xff) << 8)) >> 8);
+            }
             pr("sta.b tcc__r%d\n", r);
             break;
           //case 2: pr("stz.b tcc__r%dh\nlda.w #%d\nsta.b tcc__r%d\n", r, sv->c.ul & 0xffff, r); break;
