@@ -1,5 +1,6 @@
 PREFIX=/usr/local/snes-sdk
 OPTIMIZE=1
+CFLAGS=-Wall
 
 BINDIR=$(PREFIX)/bin
 AS=$(BINDIR)/wla-65816
@@ -22,11 +23,11 @@ snesc.smc: $(ASMOBJ) $(COBJ)
 
 %.s: %.c
 ifeq ($(OPTIMIZE),1)
-	$(CC) -I. -o $@.pre -c $<
+	$(CC) $(CFLAGS) -I. -o $@.pre -c $<
 	$(COPT) $@.pre > $@
 	rm $@.pre
 else
-	$(CC) -I. -o $@ -c $<
+	$(CC) $(CFLAGS) -I. -o $@ -c $<
 endif
 
 %.obj: %.s
