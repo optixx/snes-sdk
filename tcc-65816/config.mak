@@ -19,3 +19,4 @@ EXESUF=
 ARCH=i386
 VERSION=0.9.23
 SRC_PATH=/home/uli/devel/snes-sdk/tcc-65816
+CONFIG_CROSS=yes
