@@ -2,6 +2,11 @@
 
 import sys
 import re
+import os
+
+verbose = True
+if os.getenv('OPT816_QUIET'): verbose = False
+
 text_raw = open(sys.argv[1],'r').readlines()
 text = []
 for l in text_raw:
@@ -16,7 +21,7 @@ opted = -1
 opass = 0
 while opted:
   opass += 1
-  sys.stderr.write('optimization pass ' + str(opass) + ': ')
+  if verbose: sys.stderr.write('optimization pass ' + str(opass) + ': ')
   opted = 0
   text_opt = []
   i = 0
@@ -24,7 +29,7 @@ while opted:
     r = re.match('st([axyz]).b tcc__([rf][0-9]*h?)$', text[i])
     if r:
       doopt = False
-      for j in range(i+1, i+30):
+      for j in range(i+1, min(len(text),i+30)):
         r1 = re.match('st([axyz]).b tcc__' + r.groups()[1] + '$', text[j])
         if r1:
           doopt = True
@@ -86,17 +91,18 @@ while opted:
         i += 3
         opted += 1
         continue
-      if text[i+1] == 'inc.b tcc__' + r.groups()[0]:
-        if text[i+2] == 'inc.b tcc__' + r.groups()[0] and text[i+3] == 'lda.b tcc__' + r.groups()[0]:
-          text_opt += ['ina','ina','sta.b tcc__' + r.groups()[0]]
-          i += 4
-          opted += 1
-          continue
-        elif text[i+2] == 'lda.b tcc__' + r.groups()[0]:
-          text_opt += ['ina','sta.b tcc__' + r.groups()[0]]
-          i += 3
-          opted += 1
-          continue
+      for crem in 'inc','dec':
+        if text[i+1] == crem + '.b tcc__' + r.groups()[0]:
+          if text[i+2] == crem + '.b tcc__' + r.groups()[0] and text[i+3] == 'lda.b tcc__' + r.groups()[0]:
+            text_opt += [crem + ' a',crem + ' a','sta.b tcc__' + r.groups()[0]]
+            i += 4
+            opted += 1
+            break
+          elif text[i+2] == 'lda.b tcc__' + r.groups()[0]:
+            text_opt += [crem + ' a','sta.b tcc__' + r.groups()[0]]
+            i += 3
+            opted += 1
+            break
         
       r1 = re.match('lda.b tcc__([rf][0-9]*)',text[i+1])
       if r1:
@@ -223,8 +229,8 @@ while opted:
     text_opt += [text[i]]
     i += 1
   text = text_opt
-  sys.stderr.write(str(opted) + ' optimizations performed\n')
+  if verbose: sys.stderr.write(str(opted) + ' optimizations performed\n')
   totalopt += opted
   
 for l in text_opt: print l
-sys.stderr.write(str(totalopt) + ' optimizations performed in total\n')
+if verbose: sys.stderr.write(str(totalopt) + ' optimizations performed in total\n')

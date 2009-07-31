@@ -1,6 +1,7 @@
 #!/bin/bash
 tests="tests/* dg/*"
 test -n "$1" && tests="$@"
+export OPT816_QUIET=1
 for i in $tests
 do
 	echo -n "$i: "
