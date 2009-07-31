@@ -91,19 +91,25 @@ while opted:
         i += 3
         opted += 1
         continue
+      cont = False
       for crem in 'inc','dec':
         if text[i+1] == crem + '.b tcc__' + r.groups()[0]:
-          if text[i+2] == crem + '.b tcc__' + r.groups()[0] and text[i+3] == 'lda.b tcc__' + r.groups()[0]:
-            text_opt += [crem + ' a',crem + ' a','sta.b tcc__' + r.groups()[0]]
-            i += 4
-            opted += 1
-            break
-          elif text[i+2] == 'lda.b tcc__' + r.groups()[0]:
+          if text[i+2] == crem + '.b tcc__' + r.groups()[0] and text[i+3].startswith('lda'):
+              text_opt += [crem + ' a',crem + ' a','sta.b tcc__' + r.groups()[0]]
+              if text[i+3] == 'lda.b tcc__' + r.groups()[0]: i += 4
+              else: i += 3
+              opted += 1
+              cont = True
+              break
+          elif text[i+2].startswith('lda'): #text[i+2] == 'lda.b tcc__' + r.groups()[0]:
             text_opt += [crem + ' a','sta.b tcc__' + r.groups()[0]]
-            i += 3
+            if text[i+2] == 'lda.b tcc__' + r.groups()[0]: i += 3
+            else: i += 2
             opted += 1
+            cont = True
             break
-        
+      if cont: continue
+      
       r1 = re.match('lda.b tcc__([rf][0-9]*)',text[i+1])
       if r1:
         #sys.stderr.write('t '+text[i+2][:3]+'\n')
