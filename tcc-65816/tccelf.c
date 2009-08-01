@@ -1196,8 +1196,8 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
           int empty = 1;
           fprintf(f, ".ramsection \".bss\" bank $7e slot 2\n");
           //fprintf(f, "ramsection.bss dsb 0\n");
-          for(j = 0, esym = (Elf32_Sym*) symtab_section->data; j < symtab_section->sh_size / sizeof(Elf32_Sym*); esym++, j++) {
-            //fprintf(stderr,"symbol st_shndx %d\n", esym->st_shndx);
+          for(j = 0, esym = (Elf32_Sym*) symtab_section->data; j < symtab_section->sh_size / sizeof(Elf32_Sym); esym++, j++) {
+            //fprintf(stderr,"%d/%d symbol %p st_shndx %d\n", j, symtab_section->sh_size / sizeof(Elf32_Sym*), esym, esym->st_shndx);
             //fprintf(stderr,"esym %p\n", esym);
             //if(esym->st_shndx < 3) fprintf(stderr,"symbol %s\n", symtab_section->link->data + esym->st_name);
               if(esym->st_shndx == SHN_COMMON
@@ -1261,7 +1261,7 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
               Elf32_Sym* esym;	/* ELF symbol */
               char* lastsym = NULL;	/* name of previous symbol (some symbols appear more than once; bug?) */
               int symbol_printed = 0; /* have we already printed a symbol in this run? */
-              for(ps = 0, esym = (Elf32_Sym*) symtab_section->data; ps < symtab_section->sh_size / sizeof(Elf32_Sym*); esym++, ps++) {
+              for(ps = 0, esym = (Elf32_Sym*) symtab_section->data; ps < symtab_section->sh_size / sizeof(Elf32_Sym); esym++, ps++) {
                 //if(!find_elf_sym(symtab_section, get_tok_str(ps->v, NULL))) continue;
                 unsigned long pval;
                 char* symname = symtab_section->link->data + esym->st_name;
