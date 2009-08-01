@@ -1,3 +1,4 @@
+#include <string.h>
 #include "snesc.h"
 
 #define OUTLIT(x) (*((char*)0xfffe) = (x))

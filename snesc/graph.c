@@ -1,4 +1,7 @@
+#include <string.h>
 #include "snesc.h"
+
+void snesc_vblank(void);
 
 void enablescreen(void)
 {
