@@ -19,8 +19,8 @@ libs wla_dx snes9x wla_dx/wlalink: dummy
 tcc-65816: tcc-65816/config.h
 	@cd $@ && $(MAKE) 816-tcc
 
-tcc-65816/config.h:
-	cd tcc-65816 && ./configure --prefix=$(PREFIX) --build-cross
+tcc-65816/config.h: Makefile
+	cd tcc-65816 && ./configure --prefix=$(PREFIX) --enable-cross
 snes9x: snes9x/config.info
 snes9x/config.info:
 	cd snes9x && ./configure --prefix=$(PREFIX) --with-extra-opt="-Wno-parentheses -Wno-missing-braces" --with-debugger $(SNES9X_EXTRA)
