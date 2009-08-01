@@ -17,16 +17,19 @@ char string3[5] = "1234";		// RAM
 const int a[50] = {1,2,3,4,5};	// RAM
 int b[50] = {6,7,8,9,10};	// RAM
 
+#ifndef __APPLE__
 const int __attribute__((section(".rotzdata"))) c[50] = {65,66,67,14,15};	// ROM (extra section)
 const int __attribute__((section(".rodata"))) e[10] = {99,98,97,96};		// ROM (together with string constants)
-
+#endif
 
 
 int d[50];	// BSS
 int* f = d;
 int g = 3;
 
+#ifndef __APPLE__
 const char __attribute__((section(".rotzdata"))) x[] = "fritze";	// ROM (extra section)
+#endif
 const char const* leer1 = "";	// pointer in RAM points to empty string in ROM
 const char const leer2[] = "";	// empty string in RAM
 
