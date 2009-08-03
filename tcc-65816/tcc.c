@@ -831,16 +831,6 @@ static int tcc_add_dll(TCCState *s, const char *filename, int flags);
 #define AFF_REFERENCED_DLL  0x0002 /* load a referenced dll from another dll */
 static int tcc_add_file_internal(TCCState *s, const char *filename, int flags);
 
-/* tcccoff.c */
-int tcc_output_coff(TCCState *s1, FILE *f);
-
-/* tccpe.c */
-void *resolve_sym(TCCState *s1, const char *sym, int type);
-int pe_load_def_file(struct TCCState *s1, FILE *fp);
-void pe_setup_paths(struct TCCState *s1, int *p_output_type, const char **p_outfile, char *first_file);
-unsigned long pe_add_runtime(struct TCCState *s1);
-int tcc_output_pe(struct TCCState *s1, const char *filename);
-
 /* tccasm.c */
 
 #ifdef CONFIG_TCC_ASM

@@ -22,28 +22,8 @@ endif
 DISAS=objdump -d
 INSTALL=install
 
-ifdef CONFIG_WIN32
-PROGS=
 ifdef CONFIG_CROSS
 PROGS+=816-tcc$(EXESUF)
-endif
-PROGS+=tiny_impdef$(EXESUF)
-else
-ifeq ($(ARCH),i386)
-PROGS=
-ifdef CONFIG_CROSS
-PROGS+=816-tcc$(EXESUF)
-endif
-endif
-ifeq ($(ARCH),arm)
-PROGS=
-ifdef CONFIG_CROSS
-PROGS+=816-tcc$(EXESUF)
-endif
-endif
-ifdef CONFIG_CROSS
-PROGS+=816-tcc$(EXESUF)
-endif
 endif
 
 # run local version of tcc with local libraries and includes
