@@ -437,3 +437,5 @@ exitl4:
       stp
 
 .ends
+
+.include "malloc.asm"

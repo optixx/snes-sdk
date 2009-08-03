@@ -278,6 +278,14 @@ tcc__start:
     lda #$6000 ; 2nd byte + rts
     sta.b move_backwards_insn + 2
 
+    pea $ffff - __endramsectionram.data
+    pea :__endramsectionram.data
+    pea __endramsectionram.data
+    jsr.l __malloc_init
+    pla
+    pla
+    pla
+
     stz.b tcc__r0
     stz.b tcc__r1
 

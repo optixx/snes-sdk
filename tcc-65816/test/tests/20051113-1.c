@@ -59,13 +59,13 @@ main() {
   p->Count = 3;
   p->List[0].a.Count = 555;
   p->List[1].a.Count = 999;
-  p->List[2].a.Count = 0x101010101ULL;
+  p->List[2].a.Count = 0x10101ULL;
   p->List[0].a.Count2 = 555;
   p->List[1].a.Count2 = 999;
-  p->List[2].a.Count2 = 0x101010101LL;
-  if (Sum(p) != 555 + 999 + 0x101010101ULL)
+  p->List[2].a.Count2 = 0x10101LL;
+  if (Sum(p) != 555 + 999 + 0x10101ULL)
     abort();
-  if (Sum2(p) != 555 + 999 + 0x101010101LL)
+  if (Sum2(p) != 555 + 999 + 0x10101LL)
     abort();
   return 0;
 }
