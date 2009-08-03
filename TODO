@@ -1,9 +1,5 @@
 - use short calls for static callees (dubious: functions from one file can end
   up in different sections)
-- optimize virtual register loads (keep track of what currently resides in
-  real registers; very hairy) in fact, it is not possible at all. We can
-  never tell if a jump target will be inserted somewhere; need to write a
-  separate optimizer pass/program.
 - replace all the shifts for type conversion (very ineffienct on 65816) with
   ands (done for char, some shifts remain)
 - optimize constant float/int conversion
@@ -196,3 +192,7 @@
   remember why I put this in, it has been too long ago; testing suggests
   this is already the case; could depend on the qsort() implementation,
   though) DONE!
+- optimize virtual register loads (keep track of what currently resides in
+  real registers; very hairy) in fact, it is not possible at all. We can
+  never tell if a jump target will be inserted somewhere; need to write a
+  separate optimizer pass/program. DONE!
