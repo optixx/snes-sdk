@@ -94,7 +94,6 @@ void *malloc(unsigned int size)
 
 void __malloc_init(void *heap, unsigned int len)
 {
-     len  += 3;
      len >>= 2;
      len <<= 2;
      msys.free = msys.heap = (unit *) heap;
