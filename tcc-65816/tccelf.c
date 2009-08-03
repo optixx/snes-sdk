@@ -455,8 +455,7 @@ static void relocate_syms(TCCState *s1, int do_resolve)
     }
 }
 
-char* relocptrs[0x100000] = {NULL};
-int relocindices[0x1000000] = {0};
+char** relocptrs = NULL;
 
 /* relocate a given section (CPU dependent) */
 static void relocate_section(TCCState *s1, Section *s)
@@ -471,6 +470,10 @@ static void relocate_section(TCCState *s1, Section *s)
     int esym_index;
 #endif
 
+    if (!relocptrs) {
+        relocptrs = calloc(0x100000, sizeof(char *));
+    }
+    
     sr = s->reloc;
     rel_end = (Elf32_Rel *)(sr->data + sr->data_offset);
     qrel = (Elf32_Rel *)sr->data;
@@ -1218,7 +1221,7 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
                     bytecount ++;
                   }
                   else {		/* (ROM) .section, need to output data */
-                    if(relocptrs[((unsigned long)&s->data[j])&0xfffff]) {
+                    if(relocptrs && relocptrs[((unsigned long)&s->data[j])&0xfffff]) {
                       /* relocated -> print a symbolic pointer */
                       //fprintf(f,".dw ramsection%s + $%x", s->name, ptr);
                       char* ptrname = relocptrs[((unsigned long)&s->data[j])&0xfffff];
@@ -1238,7 +1241,7 @@ static void tcc_output_binary(TCCState *s1, FILE *f,
               }
               
               /* no symbol here, just print the data */
-              if(k == 1 && relocptrs[((unsigned long)&s->data[j])&0xfffff]) {
+              if(k == 1 && relocptrs && relocptrs[((unsigned long)&s->data[j])&0xfffff]) {
                 /* unlabeled data may have been relocated, too */
                 fprintf(f,"\n.dw %s + %d\n.dw :%s", relocptrs[((unsigned long)&s->data[j])&0xfffff], *(unsigned int*)(&s->data[j]), relocptrs[((unsigned long)&s->data[j])&0xfffff]);
                 j+=3;

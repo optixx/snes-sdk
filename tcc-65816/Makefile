@@ -6,7 +6,6 @@ include config.mak
 #CFLAGS=-pg -fprofile-arcs -ftest-coverage -O0 -g -Wall -Wno-pointer-sign
 CFLAGS=-O2 -g -Wall -Wno-pointer-sign
 ifndef CONFIG_WIN32
-LIBS=-ldl
 BCHECK_O=bcheck.o
 endif
 CFLAGS_P=$(CFLAGS) -pg -static -DCONFIG_TCC_STATIC
