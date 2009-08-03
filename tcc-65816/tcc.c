@@ -6555,6 +6555,21 @@ void vstore(void)
         gen_op('|');
         /* store result */
         vstore();
+        /* This value may be used further down, so it has to be sign- or
+           zero-extended */
+        if (ft & VT_UNSIGNED) {
+            vpushi(bit_pos);
+            gen_op(TOK_SHR);
+            vpushi((1 << bit_size) - 1);
+            gen_op('&');
+        }
+        else {
+            vpushi(16-bit_size-bit_pos);
+            gen_op(TOK_SHL);
+            vpushi(16-bit_size);
+            gen_op(TOK_SAR);
+        }
+        
     } else {
 #ifdef CONFIG_TCC_BCHECK
         /* bound check case */
