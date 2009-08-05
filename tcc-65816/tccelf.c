@@ -403,58 +403,6 @@ static void relocate_common_syms(void)
     }
 }
 
-/* relocate symbol table, resolve undefined symbols if do_resolve is
-   true and output error if undefined symbol. */
-static void relocate_syms(TCCState *s1, int do_resolve)
-{
-    Elf32_Sym *sym, *esym, *sym_end;
-    int sym_bind, sh_num, sym_index;
-    const char *name;
-    unsigned long addr;
-
-    sym_end = (Elf32_Sym *)(symtab_section->data + symtab_section->data_offset);
-    for(sym = (Elf32_Sym *)symtab_section->data + 1; 
-        sym < sym_end;
-        sym++) {
-        sh_num = sym->st_shndx;
-        if (sh_num == SHN_UNDEF) {
-            name = strtab_section->data + sym->st_name;
-            if (do_resolve) {
-                name = symtab_section->link->data + sym->st_name;
-                addr = (unsigned long)resolve_sym(s1, name, ELF32_ST_TYPE(sym->st_info));
-                if (addr) {
-                    sym->st_value = addr;
-                    goto found;
-                }
-            } else if (s1->dynsym) {
-                /* if dynamic symbol exist, then use it */
-                sym_index = find_elf_sym(s1->dynsym, name);
-                if (sym_index) {
-                    esym = &((Elf32_Sym *)s1->dynsym->data)[sym_index];
-                    sym->st_value = esym->st_value;
-                    goto found;
-                }
-            }
-            /* XXX: _fp_hw seems to be part of the ABI, so we ignore
-               it */
-            if (!strcmp(name, "_fp_hw"))
-                goto found;
-            /* only weak symbols are accepted to be undefined. Their
-               value is zero */
-            sym_bind = ELF32_ST_BIND(sym->st_info);
-            if (sym_bind == STB_WEAK) {
-                sym->st_value = 0;
-            } else {
-                error_noabort("undefined symbol '%s'", name);
-            }
-        } else if (sh_num < SHN_LORESERVE) {
-            /* add section base */
-            sym->st_value += s1->sections[sym->st_shndx]->sh_addr;
-        }
-    found: ;
-    }
-}
-
 char** relocptrs = NULL;
 
 /* relocate a given section (CPU dependent) */
@@ -513,21 +461,6 @@ static void relocate_section(TCCState *s1, Section *s)
     /* if the relocation is allocated, we change its symbol table */
     if (sr->sh_flags & SHF_ALLOC)
         sr->link = s1->dynsym;
-}
-
-/* relocate relocation table in 'sr' */
-static void relocate_rel(TCCState *s1, Section *sr)
-{
-    Section *s;
-    Elf32_Rel *rel, *rel_end;
-    
-    s = s1->sections[sr->sh_info];
-    rel_end = (Elf32_Rel *)(sr->data + sr->data_offset);
-    for(rel = (Elf32_Rel *)sr->data;
-        rel < rel_end;
-        rel++) {
-        rel->r_offset += s->sh_addr;
-    }
 }
 
 /* count the number of dynamic relocations so that we can reserve
@@ -1410,8 +1343,11 @@ int tcc_output_file(TCCState *s1, const char *filename)
                     }
                 }
             
-                if (s1->nb_errors)
-                    goto fail;
+                if (s1->nb_errors) {
+                fail:
+                    ret = -1;
+                    goto the_end;
+                }
 
                 /* now look at unresolved dynamic symbols and export
                    corresponding symbol */
@@ -1769,42 +1705,6 @@ int tcc_output_file(TCCState *s1, const char *filename)
             file_offset += s->sh_size;
     }
     
-    /* if building executable or DLL, then relocate each section
-       except the GOT which is already relocated */
-    if (file_type != TCC_OUTPUT_OBJ) {
-        relocate_syms(s1, 0);
-
-        if (s1->nb_errors != 0) {
-        fail:
-            ret = -1;
-            goto the_end;
-        }
-
-        /* relocate sections */
-        /* XXX: ignore sections with allocated relocations ? */
-        for(i = 1; i < s1->nb_sections; i++) {
-            s = s1->sections[i];
-            if (s->reloc && s != s1->got)
-                relocate_section(s1, s);
-        }
-
-        /* relocate relocation entries if the relocation tables are
-           allocated in the executable */
-        for(i = 1; i < s1->nb_sections; i++) {
-            s = s1->sections[i];
-            if ((s->sh_flags & SHF_ALLOC) &&
-                s->sh_type == SHT_REL) {
-                relocate_rel(s1, s);
-            }
-        }
-
-        /* get entry point address */
-        if (file_type == TCC_OUTPUT_EXE)
-            ehdr.e_entry = (unsigned long)tcc_get_symbol_err(s1, "_start");
-        else
-            ehdr.e_entry = text_section->sh_addr; /* XXX: is it correct ? */
-    }
-
     /* write elf file */
     if (file_type == TCC_OUTPUT_OBJ)
         mode = 0666;

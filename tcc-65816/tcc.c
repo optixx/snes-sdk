@@ -894,65 +894,6 @@ void warning(const char *fmt, ...);
 #include "816-gen.c"
 #endif
 
-#ifdef CONFIG_TCC_STATIC
-
-#define RTLD_LAZY       0x001
-#define RTLD_NOW        0x002
-#define RTLD_GLOBAL     0x100
-#define RTLD_DEFAULT    NULL
-
-/* dummy function for profiling */
-void *dlopen(const char *filename, int flag)
-{
-    return NULL;
-}
-
-const char *dlerror(void)
-{
-    return "error";
-}
-
-typedef struct TCCSyms {
-    char *str;
-    void *ptr;
-} TCCSyms;
-
-#define TCCSYM(a) { #a, &a, },
-
-/* add the symbol you want here if no dynamic linking is done */
-static TCCSyms tcc_syms[] = {
-#if !defined(CONFIG_TCCBOOT)
-    TCCSYM(printf)
-    TCCSYM(fprintf)
-    TCCSYM(fopen)
-    TCCSYM(fclose)
-#endif
-    { NULL, NULL },
-};
-
-void *resolve_sym(TCCState *s1, const char *symbol, int type)
-{
-    TCCSyms *p;
-    p = tcc_syms;
-    while (p->str != NULL) {
-        if (!strcmp(p->str, symbol))
-            return p->ptr;
-        p++;
-    }
-    return NULL;
-}
-
-#elif !defined(WIN32)
-
-#include <dlfcn.h>
-
-void *resolve_sym(TCCState *s1, const char *sym, int type)
-{
-    return dlsym(RTLD_DEFAULT, sym);
-}
-
-#endif
-
 /********************************************************/
 
 /* we use our own 'finite' function to avoid potential problems with
@@ -9741,59 +9682,6 @@ static void asm_global_instr(void)
 #endif
 
 #include "tccelf.c"
-
-#ifdef TCC_TARGET_COFF
-#include "tcccoff.c"
-#endif
-
-#ifdef TCC_TARGET_PE
-#include "tccpe.c"
-#endif
-
-/* do all relocations (needed before using tcc_get_symbol()) */
-int tcc_relocate(TCCState *s1)
-{
-    Section *s;
-    int i;
-
-    s1->nb_errors = 0;
-    
-#ifdef TCC_TARGET_PE
-    pe_add_runtime(s1);
-#else
-    tcc_add_runtime(s1);
-#endif
-
-    relocate_common_syms();
-
-    tcc_add_linker_symbols(s1);
-
-    build_got_entries(s1);
-    
-    /* compute relocation address : section are relocated in place. We
-       also alloc the bss space */
-    for(i = 1; i < s1->nb_sections; i++) {
-        s = s1->sections[i];
-        if (s->sh_flags & SHF_ALLOC) {
-            if (s->sh_type == SHT_NOBITS)
-                s->data = tcc_mallocz(s->data_offset);
-            s->sh_addr = (unsigned long)s->data;
-        }
-    }
-
-    relocate_syms(s1, 1);
-
-    if (s1->nb_errors != 0)
-        return -1;
-
-    /* relocate each section */
-    for(i = 1; i < s1->nb_sections; i++) {
-        s = s1->sections[i];
-        if (s->reloc)
-            relocate_section(s1, s);
-    }
-    return 0;
-}
 
 TCCState *tcc_new(void)
 {
