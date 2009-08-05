@@ -1,3 +1,5 @@
+/* No FP conversions in printf */
+
 #include <stdio.h>
 #include <stdarg.h>
 

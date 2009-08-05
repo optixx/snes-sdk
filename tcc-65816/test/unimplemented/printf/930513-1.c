@@ -1,3 +1,5 @@
+/* no FP conversions in printf */
+
 #include <stdio.h>
 char buf[2];
 

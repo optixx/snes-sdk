@@ -14,7 +14,9 @@ OBJS = crt0_snes.obj libm.obj libtcc.obj libc.obj
 
 all: $(OBJS)
 
-libc.obj: libc.asm malloc.asm
+libc.obj: libc.asm libc_c.asm
+libc_c.asm: libc_c.c malloc.c vsprintf.c ctype.c
+libc_c.c: malloc.c vsprintf.c ctype.c
 
 clean:
-	rm -f $(OBJS) malloc.asm
+	rm -f $(OBJS) libc_c.asm

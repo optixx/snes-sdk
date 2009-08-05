@@ -438,4 +438,4 @@ exitl4:
 
 .ends
 
-.include "malloc.asm"
+.include "libc_c.asm"

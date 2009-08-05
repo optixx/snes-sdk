@@ -1,3 +1,5 @@
+/* printf() missing */
+
 #include <stdio.h>
 #include <stdlib.h>
 
