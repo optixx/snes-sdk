@@ -1,3 +1,4 @@
+CFLAGS = -fsmall-sections
 OBJS = crt0_snes.obj libm.obj libtcc.obj libc.obj
 
 %.pasm: %.c

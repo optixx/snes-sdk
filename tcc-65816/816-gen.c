@@ -1352,7 +1352,10 @@ void gfunc_epilog(void)
   pr(".ifgr __%s_locals 0\ntsa\nclc\nadc #__%s_locals\ntas\n.endif\n", current_fn, current_fn);
   pr("rtl\n");
   
-  if(ind - ind_before_section > 50000) {
+  int secsize;
+  if (tcc_state->small_sections) secsize = 50;
+  else secsize = 50000;
+  if(ind - ind_before_section > secsize) {
     pr(".ends\n");
     section_closed = 1;
   }
