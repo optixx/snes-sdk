@@ -1,6 +1,8 @@
 /* simple malloc()/free() implementation
    adapted from here: http://www.flipcode.com/archives/Simple_Malloc_Free_Functions.shtml */
 
+#include "string.h"
+
 #define USED 1
 
 typedef struct {
@@ -104,4 +106,12 @@ void __malloc_init(void *heap, unsigned int len)
 void compact(void)
 {
      msys.free = __compact(msys.heap, 0xffff);
+}
+
+void *realloc(void *ptr, size_t size)
+{
+    void *p = malloc(size);
+    memcpy(p, ptr, size); /* this is suboptimal, but not erroneous */
+    free(ptr);
+    return p;
 }
