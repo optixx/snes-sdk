@@ -16,3 +16,5 @@ char * strncpy(char *s1, const char *s2, size_t n);
 size_t strlen(const char *);
 char * strchr(const char *, int);
 char * strrchr(const char *, int);
+
+char * strdup(const char *);
