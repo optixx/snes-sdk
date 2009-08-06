@@ -496,3 +496,5 @@ _OVLOC:	lda.b tcc__r9
 	;stz tcc__M1 + 3
 	rts
 .ends
+
+.include "libm_c.asm"
