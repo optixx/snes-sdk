@@ -298,14 +298,3 @@ tcc__start:
     rep #$20
     stp
 .ends
-
-.endasm
-.section ".data" superfree
-_hans: .dw $cafe, $babe
-_wurscht: .dw $dead, $beef
-.ends
-
-.section "dimpfen" superfree
-lda.w #_hans
-.ends
-.asm
