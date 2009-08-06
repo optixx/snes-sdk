@@ -9,15 +9,15 @@
 /* { dg-do run } */
 /* { dg-options "-O2 -ffast-math" } */
 
-extern double pow(double,double);
+extern float pow(float,float);
 extern void abort(void);
 
-double foo (double x)
+float foo (float x)
 {
   return pow (x, 6);
 }
 
-double bar (double x)
+float bar (float x)
 {
   return pow (x, -4);
 }

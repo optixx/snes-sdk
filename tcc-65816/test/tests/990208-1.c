@@ -27,7 +27,7 @@ static void g(int cond)
 }
 
 __attribute__ ((noinline))
-static void bar(void);
+void bar(void);
 
 int main()
 {
