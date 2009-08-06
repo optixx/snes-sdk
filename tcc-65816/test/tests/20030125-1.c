@@ -1,6 +1,6 @@
 /* Verify whether math functions are simplified.  */
 double sin(double);
-double floor(double);
+double _floor(double);
 float 
 t(float a)
 {
@@ -30,7 +30,7 @@ main()
 }
 __attribute__ ((noinline))
 double
-floor(double a)
+_floor(double a)
 {
 	abort ();
 }
