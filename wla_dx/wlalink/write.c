@@ -228,7 +228,7 @@ int insert_sections(void) {
 
       if (t == 0) {
 				fprintf(stderr, "INSERT_SECTIONS: No room for RAM section \"%s\" (%d bytes) in slot %d.\n", s->name, lookforsize, s->slot);
-				fprintf(stderr, "c-s %ld lfs %d tts %d\n", c-ram_slots[s->slot], lookforsize, totalsections);
+				fprintf(stderr, "c-s %d lfs %d tts %d\n", c-ram_slots[s->slot], lookforsize, totalsections);
 				return FAILED;
       }
 
@@ -692,11 +692,29 @@ int fix_references(void) {
 				l = &lt;
       }
       else {
+      				struct label *ll = NULL;
 				while (l != NULL) {
-					if (strcmp(l->name, &r->name[1]) == 0 && l->status != LABEL_STATUS_SYMBOL && l->status != LABEL_STATUS_BREAKPOINT)
-						break;
+					if (strcmp(l->name, &r->name[1]) == 0 && l->status != LABEL_STATUS_SYMBOL && l->status != LABEL_STATUS_BREAKPOINT) {
+				        	if (!ll) {
+                                                          ll = l;
+                                                }
+                                                else {
+							//printf("double label %s file_id %d r %s file_id %d\n", l->name, l->file_id, r->name, r->file_id);
+							if (is_label_file_local(&r->name[1]) == SUCCEEDED) {
+								if (l->file_id == r->file_id)
+									ll = l;
+							}
+							else {
+								fprintf(stderr,"%s:%s:%d: DUPLICATE LABEL: \"%s\" in files \"%s\" and \"%s\".\n",
+                                                                		get_file_name(r->file_id), get_source_file_name(r->file_id, r->file_id_source), r->linenumber,
+										&r->name[1],get_file_name(l->file_id),get_file_name(ll->file_id));
+								return FAILED;
+							}
+						}
+					}
 					l = l->next;
 				}
+				l = ll;
       }
 
       if (l == NULL) {
