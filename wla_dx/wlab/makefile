@@ -10,7 +10,7 @@ HFILES = main.h
 OFILES = main.o
 
 all: $(OFILES) makefile
-	$(LD) $(LDFLAGS) $(OFILES) -o wlab ; strip wlab
+	$(CC) $(LDFLAGS) $(OFILES) -o wlab ; strip wlab
 
 main.o: main.c main.h makefile
 	$(CC) $(CFLAGS) main.c

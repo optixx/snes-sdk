@@ -6,7 +6,7 @@ ifeq ($(_OS),Darwin)
 SNES9X_EXTRA = --without-assembler
 endif
 
-SUBDIRS = wla_dx wla_dx/wlalink tcc-65816 libs
+SUBDIRS = wla_dx wla_dx/wlalink wla_dx/wlab tcc-65816 libs
 ifeq ($(SNES9X),1)
 SUBDIRS += snes9x
 endif
@@ -14,7 +14,7 @@ endif
 all: $(SUBDIRS)
 
 .PHONY: dummy $(SUBDIRS)
-libs wla_dx snes9x wla_dx/wlalink: dummy
+libs wla_dx snes9x wla_dx/wlalink wla_dx/wlab: dummy
 	cd $@ && $(MAKE) PREFIX=$(PREFIX)
 tcc-65816: tcc-65816/config.h
 	@cd $@ && $(MAKE) 816-tcc
@@ -46,6 +46,7 @@ install:
 	install -m 755 tcc-65816/816-opt.py $(DESTDIR)$(PREFIX)/bin/816-opt
 	cp -p wla_dx/wla-65816 $(DESTDIR)$(PREFIX)/bin/
 	cp -p wla_dx/wlalink/wlalink $(DESTDIR)$(PREFIX)/bin/
+	cp -p wla_dx/wlab/wlab $(DESTDIR)$(PREFIX)/bin/
 ifeq ($(SNES9X),1)
 	cp -p snes9x/snes9x $(DESTDIR)$(PREFIX)/bin/
 endif
