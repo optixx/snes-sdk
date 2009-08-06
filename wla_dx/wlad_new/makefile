@@ -11,7 +11,7 @@ HFILES = main.h dasm_brutal.h dasm_analyzer.h data.h
 OFILES = main.o dasm_brutal.o dasm_analyzer.o data.o
 
 all: $(OFILES) makefile
-	$(LD) $(LDFLAGS) $(OFILES) -o wlad ; strip wlad
+	$(CC) $(LDFLAGS) $(OFILES) -o wlad ; strip wlad
 
 main.o: main.c main.h makefile defines.h
 	$(CC) $(CFLAGS) main.c

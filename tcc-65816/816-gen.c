@@ -1352,13 +1352,8 @@ void gfunc_epilog(void)
   pr(".ifgr __%s_locals 0\ntsa\nclc\nadc #__%s_locals\ntas\n.endif\n", current_fn, current_fn);
   pr("rtl\n");
   
-  int secsize;
-  if (tcc_state->small_sections) secsize = 50;
-  else secsize = 50000;
-  if(ind - ind_before_section > secsize) {
-    pr(".ends\n");
-    section_closed = 1;
-  }
+  pr(".ends\n");
+  section_closed = 1;
   
   if(-loc > 0x1f00) error("stack overflow");
   //pr(".define __%s_locals %d\n",current_fn,-loc);

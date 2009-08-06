@@ -438,7 +438,7 @@ int collect_dlr(void) {
 				t++;
 				l->slot = *(t++);
 				l->file_id_source = *(t++);
-				x = *(t++);
+				x = READ_T;
 				if (x == 0)
 					l->section_status = OFF;
 				else {
@@ -471,7 +471,7 @@ int collect_dlr(void) {
 				r->type = *(t++);
 				r->file_id_source = *(t++);
 				r->slot = *(t++);
-				x = *(t++);
+				x = READ_T;
 				if (x == 0)
 					r->section_status = OFF;
 				else {
@@ -497,7 +497,7 @@ int collect_dlr(void) {
 
 				s->id = READ_T;
 				s->type = *(t++);
-				s->section = section + *(t++);
+				s->section = section + READ_T;
 				s->file_id_source = *(t++);
 				x = *(t++);
 				s->position = *(t++);
@@ -604,7 +604,7 @@ int collect_dlr(void) {
 				}
 
 				t++;
-				x = *(t++);
+				x = READ_T;
 				l->section = x + section;
 				l->file_id_source = *(t++);
 				l->linenumber = READ_T;
@@ -633,7 +633,7 @@ int collect_dlr(void) {
 				r->name[x] = 0;
 				t++;
 				r->type = *(t++);
-				x = *(t++);
+				x = READ_T;
 				r->section = x + section;
 				r->file_id_source = *(t++);
 				r->linenumber = READ_T;
@@ -659,7 +659,7 @@ int collect_dlr(void) {
 				s->id = READ_T;
 				s->type = *(t++);
 				s->section_status = ON;
-				s->section = section + *(t++);
+				s->section = section + READ_T;
 				s->file_id_source = *(t++);
 				x = *(t++);
 				s->position = *(t++);
@@ -747,7 +747,7 @@ int parse_data_blocks(void) {
 						s->name[i++] = *(t++);
 					s->name[i] = 0;
 					s->status = *(t++);
-					s->id = section + ((int)*(t++));
+					s->id = section + READ_T;
 					s->slot = *(t++);
 					s->file_id_source = *(t++);
 					s->address = READ_T;
@@ -789,7 +789,7 @@ int parse_data_blocks(void) {
 					s->name[i++] = *(t++);
 				s->name[i] = 0;
 				s->status = *(t++);
-				s->id = section + ((int)*(t++));
+				s->id = section + READ_T;
 				s->file_id_source = *(t++);
 				s->size = READ_T;
         s->alignment = READ_T;

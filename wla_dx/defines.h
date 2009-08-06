@@ -612,5 +612,7 @@ struct filepointer {
 #define TYPE_LABEL             2
 #define TYPE_STACK_CALCULATION 3
 
+#define SEC_TO_CHAR(s) s>>24,(s>>16)&0xff,(s>>8)&0xff,s&0xff
+
 #endif
 

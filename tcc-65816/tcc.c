@@ -462,9 +462,6 @@ struct TCCState {
     int char_is_unsigned;
     int leading_underscore;
     
-    /* 816 switches */
-    int small_sections;
-    
     /* warning switches */
     int warn_write_strings;
     int warn_unsupported;
@@ -10121,7 +10118,6 @@ static const FlagDef flag_defs[] = {
     { offsetof(TCCState, char_is_unsigned), FD_INVERT, "signed-char" },
     { offsetof(TCCState, nocommon), FD_INVERT, "common" },
     { offsetof(TCCState, leading_underscore), 0, "leading-underscore" },
-    { offsetof(TCCState, small_sections), 0, "small-sections" },
 };
 
 /* set/reset a flag */
