@@ -38,3 +38,11 @@ int isspace(int c)
     else
         return 0;
 }
+
+int isprint(int c)
+{
+    if (c >= ' ' && c <= '~')
+        return 1;
+    else
+        return 0;
+}
