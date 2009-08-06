@@ -6700,7 +6700,7 @@ static void struct_decl(CType *type, int u)
         s = struct_find(v);
         if (s) {
             if (s->type.t != a)
-                error("invalid type");
+                error("invalid struct type");
             goto do_decl;
         }
     } else {
@@ -7093,7 +7093,7 @@ static void post_type(CType *type, AttributeDef *ad)
             if (l != FUNC_OLD) {
                 if (!parse_btype(&pt, &ad1)) {
                     if (l) {
-                        error("invalid type");
+                        error("invalid type in function declaration");
                     } else {
                         l = FUNC_OLD;
                         goto old_proto;
@@ -7110,6 +7110,8 @@ static void post_type(CType *type, AttributeDef *ad)
                 n = tok;
                 pt.t = VT_INT;
                 next();
+                if (!(tok == ',' || tok == ')'))
+                    error("unknown type in function declaration");
             }
             convert_parameter_type(&pt);
             s = sym_push(n | SYM_FIELD, &pt, 0, 0);
@@ -9341,7 +9343,7 @@ static void decl(int l)
 #if 0
             {
                 char buf[500];
-                type_to_str(buf, sizeof(buf), t, get_tok_str(v, NULL));
+                type_to_str(buf, sizeof(buf), &type, get_tok_str(v, NULL));
                 printf("type = '%s'\n", buf);
             }
 #endif
