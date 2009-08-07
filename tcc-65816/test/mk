@@ -37,4 +37,4 @@ do
 	fi
 	xset r on
 done
-rm -f suite.asm .sym suite.obj test.smc
+test -z "$NOCLEAN" && rm -f suite.asm .sym suite.obj test.smc
