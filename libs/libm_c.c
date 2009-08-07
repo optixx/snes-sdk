@@ -48,18 +48,18 @@ float ceil(float d)
 	return(-floor(-d));
 }
 
-static float	p0	= .2080384346694663001443843411e7;
-static float	p1	= .3028697169744036299076048876e5;
-static float	p2	= .6061485330061080841615584556e2;
-static float	q0	= .6002720360238832528230907598e7;
-static float	q1	= .3277251518082914423057964422e6;
-static float	q2	= .1749287689093076403844945335e4;
-static float	log2e	= 1.4426950408889634073599247;
-static float	sqrt2	= 1.4142135623730950488016887;
-static float	maxf	= 10000;
 
 float exp(float arg)
 {
+	static float	p0	= .2080384346694663001443843411e7;
+	static float	p1	= .3028697169744036299076048876e5;
+	static float	p2	= .6061485330061080841615584556e2;
+	static float	q0	= .6002720360238832528230907598e7;
+	static float	q1	= .3277251518082914423057964422e6;
+	static float	q2	= .1749287689093076403844945335e4;
+	static float	log2e	= 1.4426950408889634073599247;
+	static float	sqrt2	= 1.4142135623730950488016887;
+	static float	maxf	= 10000;
 	float fract;
 	float temp1, temp2, xsq;
 	int ent;
@@ -132,19 +132,18 @@ float frexp(float x, int *exp)
   return x;
 }
 
-static double	log2	= 0.693147180559945309e0;
-static double	ln10	= 2.302585092994045684;
-static double	sqrto2	= 0.707106781186547524e0;
-static double	p0	= -.240139179559210510e2;
-static double	p1	= 0.309572928215376501e2;
-static double	p2	= -.963769093368686593e1;
-static double	p3	= 0.421087371217979714e0;
-static double	q0	= -.120069589779605255e2;
-static double	q1	= 0.194809660700889731e2;
-static double	q2	= -.891110902798312337e1;
 
 float log(float arg)
 {
+	static float	log2	= 0.693147180559945309e0;
+	static float	sqrto2	= 0.707106781186547524e0;
+	static float	p0	= -.240139179559210510e2;
+	static float	p1	= 0.309572928215376501e2;
+	static float	p2	= -.963769093368686593e1;
+	static float	p3	= 0.421087371217979714e0;
+	static float	q0	= -.120069589779605255e2;
+	static float	q1	= 0.194809660700889731e2;
+	static float	q2	= -.891110902798312337e1;
 	float x,z, zsq, temp;
 	int exp;
 
@@ -173,6 +172,7 @@ float log(float arg)
 
 float log10(float arg)
 {
+	static float	ln10	= 2.302585092994045684;
 	return(log(arg)/ln10);
 }
 
