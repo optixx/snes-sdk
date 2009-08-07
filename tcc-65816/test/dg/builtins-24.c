@@ -11,6 +11,7 @@
 
 extern float pow(float,float);
 extern void abort(void);
+extern float fabs(float);
 
 float foo (float x)
 {
@@ -24,7 +25,7 @@ float bar (float x)
 
 int main()
 {
-  if (foo (2.0) != 64.0)
+  if (fabs(foo(2.0) - 64.0) > .0002)	/* no, it doesn't get more exact than that... */
     abort ();
 
   if (bar (2.0) != 0.0625)

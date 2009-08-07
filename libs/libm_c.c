@@ -72,6 +72,7 @@ float exp(float arg)
 		/* errno = ERANGE; */
 		return 1e42; //(HUGE);
 	}
+#if 1
 	arg *= log2e;
 	ent = floor(arg);
 	fract = (arg-ent) - 0.5;
@@ -79,6 +80,34 @@ float exp(float arg)
 	temp1 = ((p2*xsq+p1)*xsq+p0)*fract;
 	temp2 = ((1.0*xsq+q2)*xsq+q1)*xsq + q0;
 	return(ldexp(sqrt2*(temp2+temp1)/(temp2-temp1), ent));
+#else
+	float x = arg;
+	/* Express e**x = e**g 2**n
+	 *   = e**g e**( n loge(2) )
+	 *   = e**( g + n loge(2) )
+	 */
+	float z = floor( log2e * x + 0.5f ); /* floor() truncates toward -infinity. */
+	x -= z * 0.693359375;
+	x -= z * -2.12194440e-4;
+	int n = z;
+
+	z = x * x;
+	/* Theoretical peak relative error in [-0.5, +0.5] is 4.2e-9. */
+	z =
+	((((( 1.9875691500E-4f  * x
+	   + 1.3981999507E-3f) * x
+	   + 8.3334519073E-3f) * x
+	   + 4.1665795894E-2f) * x
+	   + 1.6666665459E-1f) * x
+	   + 5.0000001201E-1f) * z
+	   + x
+	   + 1.0f;
+
+	/* multiply by power of 2 */
+	x = ldexp( z, n );
+
+	return( x );
+#endif
 }
 
 float frexp(float x, int *exp)
@@ -200,4 +229,10 @@ float pow(float arg1, float arg2)
 domain:
 	//errno = EDOM;
 	return(0.);
+}
+
+float fabs(float f)
+{
+	if (f < 0) return -f;
+	else return f;
 }

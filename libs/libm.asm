@@ -288,14 +288,6 @@ tcc__fcmp:
 +	lda.w #1
 	rtl
 
-fabs:
-	lda.b 4,s
-	and.w #$ff7f
-	sta.b tcc__f0
-	lda.b 6,s
-	sta.b tcc__f0h
-	rtl
-
 .accu 8
 .index 8
 .8bit
