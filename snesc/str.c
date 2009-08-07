@@ -19,7 +19,10 @@ void writenum(unsigned long long num, unsigned char len, unsigned int *map, unsi
 {
     unsigned char figure;
     p += len - 1;
-    while (len && num) {
+    if (!num) {
+      map[p] = offset;
+    }
+    else while (len && num) {
       figure = num % 10;
       if (num || figure) map[p] = figure + offset;
       num /= 10;
