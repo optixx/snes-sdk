@@ -313,6 +313,33 @@ while opted:
           break
       if cont: continue
     
+    if text[i].startswith('jmp.w ') or text[i].startswith('bra __'):
+      j = i + 1
+      cont = False
+      while j < len(text) and text[j].endswith(':'):
+        if text[i].endswith(text[j][:-1]):
+          # redundant branch, discard it
+          i += 1
+          opted += 1
+          cont = True
+          break
+        j += 1
+      if cont: continue
+
+    if text[i].startswith('jmp.w '):
+      # worst case is a 4-byte instruction, so if the jump target is closer
+      # than 32 instructions, we can safely substitute a branch
+      label = text[i][6:] + ':'
+      cont = False
+      for lpos in range(max(0, i - 32), min(len(text), i + 32)):
+        if text[lpos] == label:
+          text_opt += [text[i].replace('jmp.w','bra')]
+          i += 1
+          opted += 1
+          cont = True
+          break
+      if cont: continue
+      
     text_opt += [text[i]]
     i += 1
   text = text_opt
