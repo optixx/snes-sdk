@@ -277,6 +277,45 @@ while opted:
         i += 3
         opted += 1
         continue
+      
+      # don't write preg high back to stack if it hasn't been updated
+      if text[i+1].endswith('h') and text[i+1].startswith('sta.b tcc__r') and text[i].startswith('lda ') and text[i].endswith(',s'):
+        #sys.stderr.write('checking lines\n')
+        #sys.stderr.write(text[i] + '\n' + text[i+1] + '\n')
+        local = text[i][4:]
+        reg = text[i+1][6:]
+        # lda stack ; store high preg ; ... ; load high preg ; sta stack
+        j = i + 2
+        while j < len(text) - 2 and not is_control(text[j]) and not reg in text[j]:
+          j += 1
+        if text[j] == 'lda.b ' + reg and text[j+1] == 'sta ' + local:
+          while i < j:
+            text_opt += [text[i]]
+            i += 1
+          i += 2 # skip load high preg ; sta stack
+          opted += 1
+          continue
+      
+      # reorder copying of 32-bit value to preg if it looks as if that could
+      # allow further optimization
+      # looking for
+      #   lda something
+      #   sta.b tcc_rX
+      #   lda something
+      #   sta.b tcc_rYh
+      #   ...tcc_rX...
+      if text[i].startswith('lda') and text[i+1].startswith('sta.b tcc__r'):
+        reg = text[i+1][6:]
+        if not reg.endswith('h') and \
+           text[i+2].startswith('lda') and not text[i+2].endswith(reg) and \
+           text[i+3].startswith('sta.b tcc__r') and text[i+3].endswith('h') and \
+           text[i+4].endswith(reg):
+          text_opt += [text[i+2], text[i+3]]
+          text_opt += [text[i], text[i+1]]
+          i += 4
+          # this is not an optimization per se, so we don't count it
+          continue
+      
     # end startswith('ld') 
     
     if text[i] == 'rep #$20' and text[i+1] == 'sep #$20':
