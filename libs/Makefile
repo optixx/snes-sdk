@@ -2,7 +2,7 @@ OBJS = crt0_snes.obj libm.obj libtcc.obj libc.obj
 C_SRC = malloc.c vsprintf.c ctype.c string.c
 
 %.pasm: %.c
-	../tcc-65816/816-tcc $(CFLAGS) -I. -o $@ -c $<
+	../tcc-65816/816-tcc $(CFLAGS) -I. -I./../tcc-65816/include -o $@ -c $<
 	sed 's/.include "hdr.asm"//' <$@ >$@.tmp
 	mv $@.tmp $@
 
