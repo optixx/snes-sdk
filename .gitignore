@@ -1,0 +1,14 @@
+*.o
+*.obj
+a.out
+wla_dx/wlab/wlab
+wla_dx/wlalink/wlalink
+wla_dx/wla-65816
+libs/libc_c.asm
+libs/libm_c.asm
+*.sfc
+*.smc
+*.sym
+tcc-65816/816-tcc
+tcc-65816/config.h
+tcc-65816/config.mak
