@@ -2,7 +2,8 @@
 CC?=egcs
 LD?=egcs
 
-CFLAGS?= -c -ansi -O3 -pedantic -Wall
+CFLAGS += -c -ansi
+CFLAGS ?= -O3 -pedantic -Wall
 LDFLAGS = 
 
 CFILES = main.c

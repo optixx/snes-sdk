@@ -2,7 +2,8 @@
 CC=gcc
 LD=gcc
 
-CFLAGS?= -c -O2 -ansi -pedantic -Wall -g
+CFLAGS += -c -ansi
+CFLAGS ?= -O2 -pedantic -Wall -g
 LDFLAGS = -lm
 WLAFLAGS = $(CFLAGS) -DUNIX -DW65816
 
